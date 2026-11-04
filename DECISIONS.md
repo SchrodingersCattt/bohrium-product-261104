@@ -90,3 +90,21 @@ Slots 02–10 stay unsubmitted. Local rehearsal of slot 01 still reports `status
 - 0.1.39 prints that a newer CLI may affect the score, and the 0.1.40 tarball is not downloadable from this host.
 - If 62998 later scores 0 with a source other than `missing_worker_submission`, the first place to look is the flattened trace (no tool-call pairs, cost 0) and the hidden cases. Do not resubmit until that status is known.
 - `workerReceivedAt` was still null at the `stage=received` read. The stage and `workerStatus=evaluating` are the fields that moved.
+
+## 2026-11-05 01:24 Asia/Shanghai — 62998 is still evaluating after the 30-minute receipt window
+
+Poll at 2026-11-04T17:24:15Z, 1853 seconds after `submittedAt` 2026-11-04T16:53:22Z.
+
+`status=submitted`, display score 0, `scoreIsFinal=false`, `scoringDetails=null`, `resultsJson=null`, `execStatus=null`, `bundleStatus=null`, `stuckAt=null`. `updatedAt` is still 2026-11-04T16:53:21Z. `scoringQueue.stage=received`, `workerStatus=evaluating`, `workerReceivedAt=null`, `notReceivedAfterMinutes=30`. `rawMessagesAvailable` is still null. `traceCount` is 79.
+
+`GET http://47.92.88.121:443/health` is ok. `GET /api/jobs/39640` returns `{"error":"not_found"}`, and so does `GET /api`. The upload service does not expose a job-read route, so job 39640 cannot be re-fetched. The upload response remains the job record: `status=queued`, `job_id=39640`, `worker_tenant=primary`. Generated-skill status is HTTP 401 `worker_unauthorized`.
+
+CLI on PATH is still 0.1.39. The CLI update host `latest.json` names 0.1.40, and that tarball is HTTP 404 on `play.bohrium.com` and on `nwjs1473070.bohrium.tech:50003`. `https://play.bohrium.com/install.sh` is HTTP 405. `https://play.bohrium.com/latest.json` names 0.1.48. That tarball downloaded and its sha256 is `adf4cf035ad397f38a464ec2be247bc76cb45fa085c4c7eed05379e753499ce2`.
+
+A side-by-side 0.1.48 binary under `/tmp/pg0148` (not placed on PATH) dry-ran the same slot-01 package and the same cursor session. It did not submit. Dry-run bundle sha256 `0668d2d39eecce426900962bff5875515efd6b7c960d6149cc4bc3b94937acea`, 1488641 bytes, 79 trace steps. Both the 0.1.39 zip and the 0.1.48 zip contain `raw_messages.jsonl` whose first row has `type=session_start`, plus `skills/01/SKILL.md`. 0.1.48 leaves out the `execution/results/` copy of the skill tree. Its submit path also posts `raw_messages` as a file when the attempt is created and stores the attempt `trace` field as `[]`. Attempt 62998 was created by 0.1.39, which inlined the 79 converted steps and left `rawMessagesAvailable` null.
+
+That dry-run does not identify a packaging defect that would leave `workerReceivedAt` null after the upload returned job 39640 and the queue stage moved from `awaiting_receipt` to `received`. No second submit.
+
+`python3 scripts/rehearse_worker_layout.py` exits 0. All ten packages match their skill trees and sit under the file caps. Each skill, installed at `skills/weekly-skill`, writes `app/output/result.json` and passes `validate_result.py`. Bare sidecar passes: 02 `partial`, 03 `success`, 04 `partial` with no minted assertions, 05 `success`, 06 `success` with `unchanged` edits, 08 `success`, 09 `partial` with prose. Slot 10 writes a PDF and stays `partial` because `tab:unused` is unreferenced.
+
+Next: poll 62998 until `scoreIsFinal`. Slots 02–10 stay held. Any later single resubmit waits until `scoringDetails.source` is known.

@@ -1,0 +1,40 @@
+{
+  "timestamp_asia_shanghai": "2026-11-05 01:24 CST",
+  "checked_at_utc": "2026-11-04T17:23:26.459098+00:00",
+  "steer_note": "Slot 01 attempt 62998 still evaluating 1853s after submit; workerReceivedAt null; slots 02-10 held; no resubmit",
+  "product": {
+    "pid": 1801963,
+    "alive": true,
+    "prompt": "prompts/continuous-explore-product-20261105.md",
+    "stream_mtime_utc": "2026-11-04T17:20:50.952394+00:00",
+    "stream_bytes": 1035036,
+    "focus": "hold 02-10 and do not resubmit 01 until 62998 scoreIsFinal",
+    "attempts_baseline": "62955-62964 score 0.0 final missing_worker_submission",
+    "submit_candidate": {
+      "slot": "01",
+      "challenge": "product-arena-08-3027d350",
+      "replaces": 62956,
+      "attempt": 62998,
+      "worker_job": 39640,
+      "status": "evaluating",
+      "score": 0.0,
+      "score_is_final": false,
+      "state": "queued",
+      "worker_status": "evaluating",
+      "scoring_details": null,
+      "queue_stage": null,
+      "waiting_seconds": 1853,
+      "worker_received_at": null,
+      "not_received_after_minutes": null,
+      "updated_at": "2026-11-04T16:53:21+00:00",
+      "stage": "received",
+      "queue_position": null,
+      "resubmit": false
+    },
+    "cli_version": "0.1.39",
+    "diagnosis": "62998 stage=received workerStatus=evaluating workerReceivedAt=null after 1853s (job 39640). CLI 0.1.40 tarball 404; 0.1.48 dry-run only, not submitted. Health ok.",
+    "cli_on_path": true
+  },
+  "actionable_change": true,
+  "actionable_reason": "slot01_attempt_62998_past_30min_workerReceivedAt_null"
+}

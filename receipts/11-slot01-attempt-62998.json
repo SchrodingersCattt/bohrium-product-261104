@@ -40,5 +40,40 @@
     "scoring_details": null
   },
   "generated_skill_status": "HTTP 401 worker_unauthorized (upload itself was accepted)",
-  "slots_02_to_10": "held"
+  "slots_02_to_10": "held",
+  "poll_after_receipt_window": {
+    "polled_at_utc": "2026-11-04T17:24:15Z",
+    "elapsed_seconds": 1853,
+    "status": "submitted",
+    "score_is_final": false,
+    "scoring_details": null,
+    "results_json": null,
+    "exec_status": null,
+    "bundle_status": null,
+    "stuck_at": null,
+    "updated_at": "2026-11-04T16:53:21+00:00",
+    "scoring_queue_stage": "received",
+    "worker_received_at": null,
+    "worker_status": "evaluating",
+    "scoring_state": "evaluating",
+    "raw_messages_available": null,
+    "trace_count": 79,
+    "worker_health": "ok",
+    "job_lookup": "GET /api/jobs/39640 and GET /api both not_found; no job-read route",
+    "generated_skill": "HTTP 401 worker_unauthorized",
+    "cli_on_path": "0.1.39",
+    "advertised_cli_040": "HTTP 404",
+    "play_latest_json": "0.1.48",
+    "cli_0148_tarball_sha256": "adf4cf035ad397f38a464ec2be247bc76cb45fa085c4c7eed05379e753499ce2",
+    "cli_0148_dry_run": {
+      "submitted": false,
+      "prefix": "/tmp/pg0148",
+      "bundle_sha256": "0668d2d39eecce426900962bff5875515efd6b7c960d6149cc4bc3b94937acea",
+      "bundle_bytes": 1488641,
+      "trace_steps": 79
+    },
+    "resubmit": false,
+    "slots_02_to_10": "held",
+    "next": "poll until scoreIsFinal; do not resubmit while evaluating"
+  }
 }
