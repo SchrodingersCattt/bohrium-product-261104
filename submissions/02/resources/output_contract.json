@@ -1,0 +1,4 @@
+{
+  "required": ["source_language", "target_language", "glossary", "segments", "audit"],
+  "lists": ["glossary", "segments", "sources", "uncertainty", "change_records"]
+}

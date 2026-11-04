@@ -1,0 +1,116 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-nanopub",
+    "status": "success",
+    "status_reason": "each span is one assertion or an explicit rejection, with a quote inside that span",
+    "sources": [
+      {
+        "source_id": "sp1",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/04-nanopub-assertions/examples/minimal/source.md",
+        "locator": "sp1",
+        "quote": "Widget-A uses ToySet"
+      },
+      {
+        "source_id": "sp2",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/04-nanopub-assertions/examples/minimal/source.md",
+        "locator": "sp2",
+        "quote": "Widget-A reports accuracy 0.50."
+      },
+      {
+        "source_id": "sp3",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/04-nanopub-assertions/examples/minimal/source.md",
+        "locator": "sp3",
+        "quote": "The room was quiet."
+      }
+    ],
+    "uncertainty": [],
+    "change_records": [
+      {
+        "id": "nano-1",
+        "action": "split",
+        "before": "paragraph-sized claim",
+        "after": "one span id per assertion, quote contained in that span",
+        "reason": "a paragraph often joins two claims that do not share evidence"
+      }
+    ],
+    "limits": [],
+    "provenance": {
+      "source_id": "toy-note",
+      "title": "A toy widget note",
+      "authors": [
+        "A Example"
+      ],
+      "year": 2024,
+      "version": "example-1",
+      "identifiers": []
+    },
+    "spans": [
+      {
+        "span_id": "sp1",
+        "text": "Widget-A uses ToySet"
+      },
+      {
+        "span_id": "sp2",
+        "text": "Widget-A reports accuracy 0.50."
+      },
+      {
+        "span_id": "sp3",
+        "text": "The room was quiet."
+      }
+    ],
+    "assertions": [
+      {
+        "assertion_id": "a1",
+        "span_id": "sp1",
+        "subject": "Widget-A",
+        "relation": "uses",
+        "object": "ToySet",
+        "conditions": [],
+        "assertion_text": "Widget-A uses ToySet.",
+        "evidence_quote": "Widget-A uses ToySet",
+        "evidence_kind": "direct",
+        "confidence": 0.9,
+        "confidence_basis": "The span states the use directly.",
+        "provenance": {
+          "source_id": "toy-note",
+          "title": "A toy widget note",
+          "authors": [
+            "A Example"
+          ],
+          "year": 2024,
+          "version": "example-1"
+        }
+      },
+      {
+        "assertion_id": "a2",
+        "span_id": "sp2",
+        "subject": "Widget-A",
+        "relation": "reports",
+        "object": "accuracy 0.50",
+        "conditions": [],
+        "assertion_text": "Widget-A reports accuracy 0.50.",
+        "evidence_quote": "Widget-A reports accuracy 0.50",
+        "evidence_kind": "direct",
+        "confidence": 0.9,
+        "confidence_basis": "The number is inside this span.",
+        "provenance": {
+          "source_id": "toy-note",
+          "title": "A toy widget note",
+          "authors": [
+            "A Example"
+          ],
+          "year": 2024,
+          "version": "example-1"
+        }
+      }
+    ],
+    "rejected_spans": [
+      {
+        "span_id": "sp3",
+        "reason": "No research claim; scene-setting only."
+      }
+    ],
+    "quality_checks": []
+  }
+}

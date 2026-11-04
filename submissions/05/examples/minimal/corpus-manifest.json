@@ -1,0 +1,21 @@
+{
+  "label": "EXAMPLE ONLY. Fictional documents.",
+  "documents": [
+    {
+      "source_id": "primary",
+      "doi": "10.1000/toy.primary",
+      "title": "Toy primary note",
+      "authors": ["A Example"],
+      "license": "CC BY 4.0",
+      "content_sha256": "primary-example"
+    },
+    {
+      "source_id": "secondary",
+      "doi": "10.1000/toy.secondary",
+      "title": "Toy secondary note",
+      "authors": ["B Example"],
+      "license": "CC BY 4.0",
+      "content_sha256": "secondary-example"
+    }
+  ]
+}

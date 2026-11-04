@@ -1,0 +1,10 @@
+{
+  "source_id": "primary",
+  "paragraphs": [
+    {
+      "paragraph_id": "p1",
+      "section": "methods",
+      "text": "We trained WideNet (WN) on ToySet (TS), a 100-image corpus. Accuracy was 0.91."
+    }
+  ]
+}

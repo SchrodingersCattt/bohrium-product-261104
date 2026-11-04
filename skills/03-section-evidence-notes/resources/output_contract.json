@@ -1,0 +1,4 @@
+{
+  "required": ["paper", "sections", "cards", "knowledge_points"],
+  "lists": ["sections", "cards", "knowledge_points", "sources", "uncertainty", "change_records"]
+}

@@ -1,0 +1,7 @@
+[
+  {
+    "sentence": "See the buffer paper and a missing key.",
+    "cite_keys": ["smith2020", "missing"],
+    "claim": "The sentence cites the buffer paper; the missing key is unresolved."
+  }
+]

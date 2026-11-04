@@ -1,0 +1,6 @@
+{
+  "case_id": "example-min-methods",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "command": "python train.py --config config.yaml",
+  "materials": {"config": "config.yaml", "prose": "prose.md"}
+}

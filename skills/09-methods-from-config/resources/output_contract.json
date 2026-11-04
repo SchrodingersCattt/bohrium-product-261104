@@ -1,0 +1,4 @@
+{
+  "required": ["parameter_table", "datasets", "steps", "prose", "number_audit", "reproducibility", "limitations"],
+  "lists": ["parameter_table", "datasets", "steps", "limitations", "sources", "uncertainty", "change_records"]
+}

@@ -1,0 +1,10 @@
+{
+  "source_id": "secondary",
+  "paragraphs": [
+    {
+      "paragraph_id": "p1",
+      "section": "results",
+      "text": "WideNet (WN) is reused here. Accuracy was 0.80 on a 12-image split. The baseline CNN is unrelated."
+    }
+  ]
+}

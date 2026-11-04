@@ -1,0 +1,118 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-citations",
+    "status": "partial",
+    "status_reason": "numbering finished; unknown keys or DOI conflicts are listed and not guessed",
+    "sources": [
+      {
+        "source_id": "bibliography",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/07-citation-bibliography/examples/minimal/refs.bib",
+        "locator": "library",
+        "quote": ""
+      },
+      {
+        "source_id": "manuscript",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/07-citation-bibliography/examples/minimal/manuscript.tex",
+        "locator": "cite commands",
+        "quote": "See \\cite{smith2020,missing}.\nLater work revisits it \\cite{smith2020arxiv,other}.\n"
+      }
+    ],
+    "uncertainty": [
+      {
+        "item": "missing",
+        "reason": "citation key is not in the library",
+        "needs_human": true
+      },
+      {
+        "item": "smith2020/smithclash",
+        "reason": "titles and authors overlap but DOIs differ; not merged",
+        "needs_human": true
+      },
+      {
+        "item": "smith2020arxiv/smithclash",
+        "reason": "titles and authors overlap but DOIs differ; not merged",
+        "needs_human": true
+      }
+    ],
+    "change_records": [
+      {
+        "id": "cite-1",
+        "action": "renumber",
+        "before": "author keys in citation order",
+        "after": "[1,2]",
+        "reason": "first-citation numbering after DOI-aware dedup; unknown keys were not invented"
+      },
+      {
+        "id": "merge-smith2020arxiv",
+        "action": "merge",
+        "before": "smith2020arxiv",
+        "after": "smith2020",
+        "reason": "same DOI 10.1000/example.1"
+      }
+    ],
+    "limits": [
+      "numbering finished; unknown keys or DOI conflicts are listed and not guessed"
+    ],
+    "numbering_policy": "first-citation",
+    "key_to_number": {
+      "smith2020": 1,
+      "other": 2
+    },
+    "redirect": {
+      "smith2020arxiv": "smith2020"
+    },
+    "references": [
+      {
+        "number": 1,
+        "key": "smith2020",
+        "plain": "Ada Smith. Binding in buffers. J Examples 3, 1--5 (2020). https://doi.org/10.1000/example.1",
+        "gbt7714_simplified": "Ada Smith. Binding in buffers[J]. J Examples, 2020, 3: 1-5. DOI:10.1000/example.1.",
+        "entry_type": "article"
+      },
+      {
+        "number": 2,
+        "key": "other",
+        "plain": "Bo Lee. Another paper. J Examples 4, 9--12 (2021). https://doi.org/10.1000/example.2",
+        "gbt7714_simplified": "Bo Lee. Another paper[J]. J Examples, 2021, 4: 9-12. DOI:10.1000/example.2.",
+        "entry_type": "article"
+      }
+    ],
+    "duplicates": [
+      {
+        "kept": "smith2020",
+        "merged": "smith2020arxiv",
+        "reason": "same DOI 10.1000/example.1"
+      }
+    ],
+    "unknown_keys": [
+      "missing"
+    ],
+    "conflicts": [
+      {
+        "left": "smith2020",
+        "right": "smithclash",
+        "reason": "titles and authors overlap but DOIs differ; not merged"
+      },
+      {
+        "left": "smith2020arxiv",
+        "right": "smithclash",
+        "reason": "titles and authors overlap but DOIs differ; not merged"
+      }
+    ],
+    "claim_checks": [
+      {
+        "sentence": "See the buffer paper and a missing key.",
+        "cite_keys": [
+          "smith2020",
+          "missing"
+        ],
+        "claim": "The sentence cites the buffer paper; the missing key is unresolved.",
+        "unresolved_keys": [
+          "missing"
+        ]
+      }
+    ],
+    "rendered_cites": "[1,2]"
+  }
+}

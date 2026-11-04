@@ -1,0 +1,4 @@
+{
+  "required": ["numbering_policy", "key_to_number", "references", "duplicates", "unknown_keys"],
+  "lists": ["references", "duplicates", "unknown_keys", "sources", "uncertainty", "change_records"]
+}

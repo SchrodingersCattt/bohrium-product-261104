@@ -1,0 +1,15 @@
+{
+  "label": "EXAMPLE ONLY. Not an official translation.",
+  "source_language": "en",
+  "target_language": "zh",
+  "segments": [
+    {
+      "seg_id": "s1",
+      "translation": "结合亲和力为 10 mg/L（缓冲液）(Smith, 2020)。公式 $E = mc^2$ 在 25 °C 下成立。"
+    },
+    {
+      "seg_id": "s2",
+      "translation": "本句没有测量值，只用来交代场景。"
+    }
+  ]
+}

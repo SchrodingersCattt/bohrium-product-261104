@@ -1,0 +1,5 @@
+{
+  "case_id": "example-min-latex-broken",
+  "label": "EXAMPLE ONLY. Intentional undefined command.",
+  "materials": {"main": "broken.tex"}
+}

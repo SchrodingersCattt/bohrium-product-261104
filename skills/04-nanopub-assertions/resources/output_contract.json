@@ -1,0 +1,4 @@
+{
+  "required": ["provenance", "assertions", "quality_checks"],
+  "lists": ["assertions", "quality_checks", "sources", "uncertainty", "change_records"]
+}

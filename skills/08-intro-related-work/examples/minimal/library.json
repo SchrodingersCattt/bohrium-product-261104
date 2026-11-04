@@ -1,0 +1,11 @@
+{
+  "label": "EXAMPLE ONLY.",
+  "papers": [
+    {"paper_id": "p1", "title": "Method A", "year": 2019, "text": "Method A fails on small samples."},
+    {"paper_id": "p2", "title": "Method B", "year": 2021, "text": "Method B needs labeled video."}
+  ],
+  "inventory": [
+    {"evidence_id": "e1", "kind": "method", "text": "Our sampler uses 32 labels."},
+    {"evidence_id": "e2", "kind": "result", "text": "Accuracy is 0.80 on ToySet."}
+  ]
+}

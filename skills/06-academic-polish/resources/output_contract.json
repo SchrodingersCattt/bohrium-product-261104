@@ -1,0 +1,4 @@
+{
+  "required": ["revised_text", "edits", "preservation"],
+  "lists": ["edits", "preservation", "sources", "uncertainty", "change_records"]
+}

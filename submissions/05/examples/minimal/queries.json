@@ -1,0 +1,5 @@
+[
+  {"query_id": "q1", "type": "find_surface", "surface": "WideNet"},
+  {"query_id": "q2", "type": "outgoing", "surface": "WideNet"},
+  {"query_id": "q3", "type": "conflicts"}
+]

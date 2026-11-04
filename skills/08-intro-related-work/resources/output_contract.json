@@ -1,0 +1,4 @@
+{
+  "required": ["groups", "gap", "contributions", "prose", "citation_coverage"],
+  "lists": ["groups", "contributions", "citation_coverage", "sources", "uncertainty", "change_records"]
+}

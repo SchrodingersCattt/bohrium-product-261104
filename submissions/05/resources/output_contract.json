@@ -1,0 +1,4 @@
+{
+  "required": ["graph", "merges", "conflicts", "queries"],
+  "lists": ["merges", "conflicts", "queries", "sources", "uncertainty", "change_records"]
+}

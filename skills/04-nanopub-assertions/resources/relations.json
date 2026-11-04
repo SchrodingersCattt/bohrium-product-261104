@@ -1,0 +1,29 @@
+{
+  "relations": [
+    "improves",
+    "outperforms",
+    "underperforms",
+    "uses",
+    "compares",
+    "supports",
+    "contradicts",
+    "causes",
+    "correlates",
+    "measures",
+    "reports",
+    "limits",
+    "equals",
+    "part_of",
+    "evaluated_on",
+    "trained_on",
+    "implemented_with",
+    "increases",
+    "decreases",
+    "not_different",
+    "depends_on",
+    "proposes",
+    "applies_to",
+    "derived_from"
+  ],
+  "note": "Use a listed relation. An unlisted relation must set relation_status to proposed and will be returned as uncertainty, not as a settled triple."
+}

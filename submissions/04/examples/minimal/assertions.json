@@ -1,0 +1,44 @@
+{
+  "label": "EXAMPLE ONLY. Toy assertions, not a contest paper.",
+  "paper_provenance": {
+    "source_id": "toy-note",
+    "title": "A toy widget note",
+    "authors": ["A Example"],
+    "year": 2024,
+    "version": "example-1",
+    "identifiers": []
+  },
+  "assertions": [
+    {
+      "assertion_id": "a1",
+      "span_id": "sp1",
+      "subject": "Widget-A",
+      "relation": "uses",
+      "object": "ToySet",
+      "conditions": [],
+      "assertion_text": "Widget-A uses ToySet.",
+      "evidence_quote": "Widget-A uses ToySet",
+      "evidence_kind": "direct",
+      "confidence": 0.9,
+      "confidence_basis": "The span states the use directly.",
+      "provenance": {"source_id": "toy-note", "title": "A toy widget note", "authors": ["A Example"], "year": 2024, "version": "example-1"}
+    },
+    {
+      "assertion_id": "a2",
+      "span_id": "sp2",
+      "subject": "Widget-A",
+      "relation": "reports",
+      "object": "accuracy 0.50",
+      "conditions": [],
+      "assertion_text": "Widget-A reports accuracy 0.50.",
+      "evidence_quote": "Widget-A reports accuracy 0.50",
+      "evidence_kind": "direct",
+      "confidence": 0.9,
+      "confidence_basis": "The number is inside this span.",
+      "provenance": {"source_id": "toy-note", "title": "A toy widget note", "authors": ["A Example"], "year": 2024, "version": "example-1"}
+    }
+  ],
+  "rejected_spans": [
+    {"span_id": "sp3", "reason": "No research claim; scene-setting only."}
+  ]
+}

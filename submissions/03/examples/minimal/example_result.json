@@ -1,0 +1,162 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-notes",
+    "status": "success",
+    "status_reason": "cards follow the paper's own sections and each quote is a substring",
+    "sources": [
+      {
+        "source_id": "sec1",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+        "locator": "Question",
+        "quote": "The toy study asks whether a 12-image split is enough."
+      },
+      {
+        "source_id": "sec2",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+        "locator": "Data",
+        "quote": "The only corpus is ToySet, with 12 images."
+      },
+      {
+        "source_id": "sec3",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+        "locator": "Method",
+        "quote": "Training uses seed 7 and no extra labels."
+      },
+      {
+        "source_id": "sec4",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+        "locator": "Finding",
+        "quote": "Accuracy on the split was 0.50."
+      },
+      {
+        "source_id": "sec5",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+        "locator": "Limitation",
+        "quote": "The split has 12 images, so the estimate is unstable."
+      }
+    ],
+    "uncertainty": [],
+    "change_records": [
+      {
+        "id": "notes-1",
+        "action": "bind",
+        "before": "free summary",
+        "after": "section ids plus substring quotes",
+        "reason": "a fluent summary can cite the wrong section"
+      }
+    ],
+    "limits": [],
+    "paper": {
+      "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/03-section-evidence-notes/examples/minimal/paper.md",
+      "n_sections": 5
+    },
+    "sections": [
+      {
+        "section_id": "sec1",
+        "title": "Question",
+        "level": 1,
+        "text": "The toy study asks whether a 12-image split is enough."
+      },
+      {
+        "section_id": "sec2",
+        "title": "Data",
+        "level": 1,
+        "text": "The only corpus is ToySet, with 12 images."
+      },
+      {
+        "section_id": "sec3",
+        "title": "Method",
+        "level": 1,
+        "text": "Training uses seed 7 and no extra labels."
+      },
+      {
+        "section_id": "sec4",
+        "title": "Finding",
+        "level": 1,
+        "text": "Accuracy on the split was 0.50."
+      },
+      {
+        "section_id": "sec5",
+        "title": "Limitation",
+        "level": 1,
+        "text": "The split has 12 images, so the estimate is unstable."
+      }
+    ],
+    "cards": [
+      {
+        "card_id": "c1",
+        "section_id": "sec1",
+        "field": "question",
+        "text": "Is a 12-image split enough?",
+        "evidence_quote": "whether a 12-image split is enough"
+      },
+      {
+        "card_id": "c2",
+        "section_id": "sec2",
+        "field": "data",
+        "text": "ToySet has 12 images.",
+        "evidence_quote": "ToySet, with 12 images"
+      },
+      {
+        "card_id": "c3",
+        "section_id": "sec3",
+        "field": "method",
+        "text": "Seed 7, no extra labels.",
+        "evidence_quote": "seed 7 and no extra labels"
+      },
+      {
+        "card_id": "c4",
+        "section_id": "sec4",
+        "field": "finding",
+        "text": "Accuracy was 0.50.",
+        "evidence_quote": "Accuracy on the split was 0.50"
+      },
+      {
+        "card_id": "c5",
+        "section_id": "sec5",
+        "field": "limitation",
+        "text": "Twelve images make the estimate unstable.",
+        "evidence_quote": "The split has 12 images, so the estimate is unstable"
+      }
+    ],
+    "knowledge_points": [
+      {
+        "point_id": "c1",
+        "field": "question",
+        "text": "Is a 12-image split enough?",
+        "section_id": "sec1",
+        "evidence_quote": "whether a 12-image split is enough"
+      },
+      {
+        "point_id": "c2",
+        "field": "data",
+        "text": "ToySet has 12 images.",
+        "section_id": "sec2",
+        "evidence_quote": "ToySet, with 12 images"
+      },
+      {
+        "point_id": "c3",
+        "field": "method",
+        "text": "Seed 7, no extra labels.",
+        "section_id": "sec3",
+        "evidence_quote": "seed 7 and no extra labels"
+      },
+      {
+        "point_id": "c4",
+        "field": "finding",
+        "text": "Accuracy was 0.50.",
+        "section_id": "sec4",
+        "evidence_quote": "Accuracy on the split was 0.50"
+      },
+      {
+        "point_id": "c5",
+        "field": "limitation",
+        "text": "Twelve images make the estimate unstable.",
+        "section_id": "sec5",
+        "evidence_quote": "The split has 12 images, so the estimate is unstable"
+      }
+    ],
+    "field_gaps": []
+  }
+}

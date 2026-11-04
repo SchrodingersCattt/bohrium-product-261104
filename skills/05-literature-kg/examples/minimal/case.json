@@ -1,0 +1,11 @@
+{
+  "case_id": "example-min-kg",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "materials": {
+    "manifest": "corpus-manifest.json",
+    "primary": "primary-material.json",
+    "secondary": "secondary-material.json",
+    "candidates": "candidates.json",
+    "queries": "queries.json"
+  }
+}

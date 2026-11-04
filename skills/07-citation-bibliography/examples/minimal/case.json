@@ -1,0 +1,10 @@
+{
+  "case_id": "example-min-citations",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "numbering": "first-citation",
+  "materials": {
+    "bibliography": "refs.bib",
+    "manuscript": "manuscript.tex",
+    "claims": "claims.json"
+  }
+}

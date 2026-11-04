@@ -1,0 +1,4 @@
+{
+  "required": ["main_file", "compile", "errors", "hygiene", "artifacts"],
+  "lists": ["errors", "hygiene", "sources", "uncertainty", "change_records"]
+}

@@ -1,0 +1,73 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-polish",
+    "status": "success",
+    "status_reason": "applied edits keep numbers, units, citations, and hedge strength",
+    "sources": [
+      {
+        "source_id": "s1",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/06-academic-polish/examples/minimal/source.txt",
+        "locator": "s1",
+        "quote": "The model may reach 10 mg/L [1]."
+      },
+      {
+        "source_id": "s2",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/06-academic-polish/examples/minimal/source.txt",
+        "locator": "s2",
+        "quote": "Figure 1 shows the same run."
+      }
+    ],
+    "uncertainty": [],
+    "change_records": [],
+    "limits": [],
+    "revised_text": "The model may reach 10 mg/L [1]. Figure 1 shows the same run.",
+    "edits": [
+      {
+        "sentence_id": "s1",
+        "original": "The model may reach 10 mg/L [1].",
+        "revised": "The model may reach 10 mg/L [1].",
+        "edit_type": "unchanged",
+        "reason": "The hedge, dose, and citation are already exact.",
+        "applied": false
+      },
+      {
+        "sentence_id": "s2",
+        "original": "Figure 1 shows the same run.",
+        "revised": "Figure 1 shows the same run.",
+        "edit_type": "unchanged",
+        "reason": "No grammar change is required.",
+        "applied": false
+      }
+    ],
+    "preservation": [
+      {
+        "sentence_id": "s1",
+        "numbers": [
+          "1",
+          "10"
+        ],
+        "citations": [
+          "[1]"
+        ]
+      },
+      {
+        "sentence_id": "s2",
+        "numbers": [
+          "1"
+        ],
+        "citations": []
+      }
+    ],
+    "sentences": [
+      {
+        "sentence_id": "s1",
+        "text": "The model may reach 10 mg/L [1]."
+      },
+      {
+        "sentence_id": "s2",
+        "text": "Figure 1 shows the same run."
+      }
+    ]
+  }
+}

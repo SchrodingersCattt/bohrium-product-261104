@@ -1,0 +1,29 @@
+{
+  "label": "EXAMPLE ONLY. Synthetic boxes, not a contest PDF.",
+  "pages": [
+    {
+      "page": 1,
+      "width": 595,
+      "height": 842,
+      "blocks": [
+        {"bbox": [72, 28, 400, 44], "size": 9, "text": "Example Journal  1"},
+        {"bbox": [72, 70, 520, 92], "size": 16, "text": "1. Introduction"},
+        {"bbox": [320, 100, 530, 160], "size": 10, "text": "RIGHT-ANCHOR is the right column and must not be read first."},
+        {"bbox": [72, 120, 280, 190], "size": 10, "text": "LEFT-ANCHOR opens the left column after the heading."},
+        {"bbox": [72, 200, 280, 240], "size": 10, "text": "E = mc^2"},
+        {"bbox": [280, 810, 320, 828], "size": 9, "text": "1"}
+      ]
+    },
+    {
+      "page": 2,
+      "width": 595,
+      "height": 842,
+      "blocks": [
+        {"bbox": [72, 28, 400, 44], "size": 9, "text": "Example Journal  2"},
+        {"bbox": [320, 100, 530, 170], "size": 10, "text": "PAGE2-RIGHT stays in the right column."},
+        {"bbox": [72, 130, 280, 200], "size": 10, "text": "PAGE2-LEFT continues the paper."},
+        {"bbox": [280, 810, 320, 828], "size": 9, "text": "2"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "label": "EXAMPLE ONLY. Toy introduction skeleton.",
+  "groups": [
+    {
+      "group_id": "g1",
+      "axis": "what the method still requires",
+      "paper_ids": ["p1", "p2"],
+      "cells": [
+        {"paper_id": "p1", "claim": "fails on small samples", "quote": "Method A fails on small samples."},
+        {"paper_id": "p2", "claim": "needs labeled video", "quote": "Method B needs labeled video."}
+      ]
+    }
+  ],
+  "gap": {
+    "text": "Neither supplied paper covers a tiny labeled set.",
+    "premise_ids": ["p1", "p2"],
+    "author_judgment": true
+  },
+  "contributions": [
+    {"text": "A sampler that uses 32 labels.", "evidence_ids": ["e1"]}
+  ],
+  "prose": "Method A fails when samples are small [@p1]. The sampler uses the inventoried setting [@e1]."
+}

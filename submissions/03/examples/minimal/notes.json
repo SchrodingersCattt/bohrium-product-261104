@@ -1,0 +1,10 @@
+{
+  "label": "EXAMPLE ONLY. Toy notes, not a contest paper.",
+  "cards": [
+    {"card_id": "c1", "section_id": "sec1", "field": "question", "text": "Is a 12-image split enough?", "evidence_quote": "whether a 12-image split is enough"},
+    {"card_id": "c2", "section_id": "sec2", "field": "data", "text": "ToySet has 12 images.", "evidence_quote": "ToySet, with 12 images"},
+    {"card_id": "c3", "section_id": "sec3", "field": "method", "text": "Seed 7, no extra labels.", "evidence_quote": "seed 7 and no extra labels"},
+    {"card_id": "c4", "section_id": "sec4", "field": "finding", "text": "Accuracy was 0.50.", "evidence_quote": "Accuracy on the split was 0.50"},
+    {"card_id": "c5", "section_id": "sec5", "field": "limitation", "text": "Twelve images make the estimate unstable.", "evidence_quote": "The split has 12 images, so the estimate is unstable"}
+  ]
+}

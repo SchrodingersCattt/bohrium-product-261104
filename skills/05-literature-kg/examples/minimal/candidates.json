@@ -1,0 +1,17 @@
+{
+  "label": "EXAMPLE ONLY. Candidate graph for the toy notes.",
+  "nodes": [
+    {"local_id": "p-method", "source_id": "primary", "paragraph_id": "p1", "surface": "WideNet", "aliases": ["WN"], "type": "method", "evidence": "We trained WideNet (WN) on ToySet (TS)", "attributes": {}},
+    {"local_id": "p-data", "source_id": "primary", "paragraph_id": "p1", "surface": "ToySet", "aliases": ["TS"], "type": "dataset", "evidence": "on ToySet (TS), a 100-image corpus", "attributes": {"images": 100}},
+    {"local_id": "p-score", "source_id": "primary", "paragraph_id": "p1", "surface": "Accuracy", "type": "metric", "evidence": "Accuracy was 0.91", "attributes": {"value": 0.91}},
+    {"local_id": "s-method", "source_id": "secondary", "paragraph_id": "p1", "surface": "WideNet", "aliases": ["WN"], "type": "method", "evidence": "WideNet (WN) is reused here", "attributes": {}},
+    {"local_id": "s-score", "source_id": "secondary", "paragraph_id": "p1", "surface": "Accuracy", "type": "metric", "evidence": "Accuracy was 0.80", "attributes": {"value": 0.80}},
+    {"local_id": "s-cnn", "source_id": "secondary", "paragraph_id": "p1", "surface": "CNN", "type": "method", "evidence": "The baseline CNN is unrelated", "attributes": {}},
+    {"local_id": "bad", "source_id": "secondary", "paragraph_id": "p1", "surface": "ImageNet", "type": "dataset", "evidence": "ImageNet", "attributes": {}}
+  ],
+  "edges": [
+    {"local_id": "e1", "source_local": "p-method", "target_local": "p-data", "relation": "evaluated_on", "source_id": "primary", "paragraph_id": "p1", "evidence": "We trained WideNet (WN) on ToySet (TS), a 100-image corpus.", "conditions": "100-image corpus"},
+    {"local_id": "e2", "source_local": "p-method", "target_local": "p-score", "relation": "reports", "source_id": "primary", "paragraph_id": "p1", "evidence": "Accuracy was 0.91.", "conditions": ""},
+    {"local_id": "e3", "source_local": "s-method", "target_local": "s-score", "relation": "reports", "source_id": "secondary", "paragraph_id": "p1", "evidence": "Accuracy was 0.80 on a 12-image split.", "conditions": "12-image split"}
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-kg",
+    "status": "success",
+    "status_reason": "nodes and edges are substring-grounded; conflicting values were not merged",
+    "sources": [
+      {
+        "source_id": "primary",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/05-literature-kg/examples/minimal/primary-material.json",
+        "locator": "p1",
+        "quote": "We trained WideNet (WN) on ToySet (TS), a 100-image corpus. Accuracy was 0.91."
+      },
+      {
+        "source_id": "secondary",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/05-literature-kg/examples/minimal/secondary-material.json",
+        "locator": "p1",
+        "quote": "WideNet (WN) is reused here. Accuracy was 0.80 on a 12-image split. The baseline CNN is unrelated."
+      }
+    ],
+    "uncertainty": [
+      {
+        "item": "bad",
+        "reason": "surface is not in the cited paragraph",
+        "needs_human": true
+      },
+      {
+        "item": "p-score/s-score",
+        "reason": "same surface but conflicting attributes; not merged",
+        "needs_human": true
+      }
+    ],
+    "change_records": [
+      {
+        "id": "kg-1",
+        "action": "merge-or-keep",
+        "before": "per-paper surfaces",
+        "after": "merged only when alias and long form agree and attributes do not conflict",
+        "reason": "a shared method name is not a shared measurement"
+      },
+      {
+        "id": "kg-run-9bb45f93",
+        "action": "query",
+        "before": "",
+        "after": "3 queries",
+        "reason": "queries are executed on the built graph, not described"
+      }
+    ],
+    "limits": [],
+    "graph": {
+      "nodes": [
+        {
+          "node_id": "n1",
+          "type": "method",
+          "surface": "WideNet",
+          "aliases": [
+            "WN",
+            "WideNet"
+          ],
+          "attributes": {},
+          "evidence": [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN)"
+            },
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN)"
+            },
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "We trained WideNet (WN) on ToySet (TS)"
+            },
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN) is reused here"
+            }
+          ],
+          "member_ids": [
+            "h1",
+            "h3",
+            "p-method",
+            "s-method"
+          ]
+        },
+        {
+          "node_id": "n2",
+          "type": "dataset",
+          "surface": "ToySet",
+          "aliases": [
+            "TS",
+            "ToySet"
+          ],
+          "attributes": {
+            "images": 100
+          },
+          "evidence": [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "ToySet (TS)"
+            },
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "on ToySet (TS), a 100-image corpus"
+            }
+          ],
+          "member_ids": [
+            "h2",
+            "p-data"
+          ]
+        },
+        {
+          "node_id": "n3",
+          "type": "metric",
+          "surface": "Accuracy",
+          "aliases": [],
+          "attributes": {
+            "value": 0.91
+          },
+          "evidence": [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "Accuracy was 0.91"
+            }
+          ],
+          "member_ids": [
+            "p-score"
+          ]
+        },
+        {
+          "node_id": "n4",
+          "type": "metric",
+          "surface": "Accuracy",
+          "aliases": [],
+          "attributes": {
+            "value": 0.8
+          },
+          "evidence": [
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "Accuracy was 0.80"
+            }
+          ],
+          "member_ids": [
+            "s-score"
+          ]
+        },
+        {
+          "node_id": "n5",
+          "type": "method",
+          "surface": "CNN",
+          "aliases": [],
+          "attributes": {},
+          "evidence": [
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "The baseline CNN is unrelated"
+            }
+          ],
+          "member_ids": [
+            "s-cnn"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "e1",
+          "source": "n1",
+          "target": "n2",
+          "relation": "evaluated_on",
+          "conditions": "100-image corpus",
+          "evidence": [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "We trained WideNet (WN) on ToySet (TS), a 100-image corpus."
+            }
+          ]
+        },
+        {
+          "edge_id": "e2",
+          "source": "n1",
+          "target": "n3",
+          "relation": "reports",
+          "conditions": "",
+          "evidence": [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "Accuracy was 0.91."
+            }
+          ]
+        },
+        {
+          "edge_id": "e3",
+          "source": "n1",
+          "target": "n4",
+          "relation": "reports",
+          "conditions": "12-image split",
+          "evidence": [
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "Accuracy was 0.80 on a 12-image split."
+            }
+          ]
+        }
+      ]
+    },
+    "merges": [
+      {
+        "kept": "h1",
+        "merged": "h3",
+        "reason": "shared alias and long-form overlap across papers"
+      },
+      {
+        "kept": "h1",
+        "merged": "p-method",
+        "reason": "same paper alias"
+      },
+      {
+        "kept": "h1",
+        "merged": "s-method",
+        "reason": "shared alias and long-form overlap across papers"
+      },
+      {
+        "kept": "h2",
+        "merged": "p-data",
+        "reason": "same paper alias"
+      },
+      {
+        "kept": "h3",
+        "merged": "p-method",
+        "reason": "shared alias and long-form overlap across papers"
+      },
+      {
+        "kept": "h3",
+        "merged": "s-method",
+        "reason": "same paper alias"
+      },
+      {
+        "kept": "p-method",
+        "merged": "s-method",
+        "reason": "shared alias and long-form overlap across papers"
+      }
+    ],
+    "conflicts": [
+      {
+        "left": "p-score",
+        "right": "s-score",
+        "reason": "same surface but conflicting attributes; not merged"
+      }
+    ],
+    "rejected": [
+      {
+        "kind": "node",
+        "id": "bad",
+        "reason": "surface is not in the cited paragraph"
+      }
+    ],
+    "queries": [
+      {
+        "query_id": "q1",
+        "type": "find_surface",
+        "node_ids": [
+          "n1"
+        ],
+        "evidence": [
+          [
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN)"
+            },
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN)"
+            },
+            {
+              "source_id": "primary",
+              "paragraph_id": "p1",
+              "quote": "We trained WideNet (WN) on ToySet (TS)"
+            },
+            {
+              "source_id": "secondary",
+              "paragraph_id": "p1",
+              "quote": "WideNet (WN) is reused here"
+            }
+          ]
+        ]
+      },
+      {
+        "query_id": "q2",
+        "type": "outgoing",
+        "edges": [
+          {
+            "edge_id": "e1",
+            "source": "n1",
+            "target": "n2",
+            "relation": "evaluated_on",
+            "conditions": "100-image corpus",
+            "evidence": [
+              {
+                "source_id": "primary",
+                "paragraph_id": "p1",
+                "quote": "We trained WideNet (WN) on ToySet (TS), a 100-image corpus."
+              }
+            ]
+          },
+          {
+            "edge_id": "e2",
+            "source": "n1",
+            "target": "n3",
+            "relation": "reports",
+            "conditions": "",
+            "evidence": [
+              {
+                "source_id": "primary",
+                "paragraph_id": "p1",
+                "quote": "Accuracy was 0.91."
+              }
+            ]
+          },
+          {
+            "edge_id": "e3",
+            "source": "n1",
+            "target": "n4",
+            "relation": "reports",
+            "conditions": "12-image split",
+            "evidence": [
+              {
+                "source_id": "secondary",
+                "paragraph_id": "p1",
+                "quote": "Accuracy was 0.80 on a 12-image split."
+              }
+            ]
+          }
+        ],
+        "note": ""
+      },
+      {
+        "query_id": "q3",
+        "type": "conflicts",
+        "conflicts": [
+          {
+            "left": "p-score",
+            "right": "s-score",
+            "reason": "same surface but conflicting attributes; not merged"
+          }
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "source_id": "primary",
+        "doi": "10.1000/toy.primary",
+        "title": "Toy primary note",
+        "authors": [
+          "A Example"
+        ],
+        "license": "CC BY 4.0",
+        "content_sha256": "primary-example"
+      },
+      {
+        "source_id": "secondary",
+        "doi": "10.1000/toy.secondary",
+        "title": "Toy secondary note",
+        "authors": [
+          "B Example"
+        ],
+        "license": "CC BY 4.0",
+        "content_sha256": "secondary-example"
+      }
+    ],
+    "position_note": "Locators are organizer paragraph_id values, not PDF page numbers."
+  }
+}

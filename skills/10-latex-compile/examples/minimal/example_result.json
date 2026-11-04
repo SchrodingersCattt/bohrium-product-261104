@@ -1,0 +1,66 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "clean_compile": {
+    "case_id": "example-min-latex",
+    "status": "partial",
+    "status_reason": "compile finished; label or citation hygiene still reports issues",
+    "sources": [
+      {
+        "source_id": "tex",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/10-latex-compile/examples/minimal/main.tex",
+        "locator": "main.tex",
+        "quote": ""
+      }
+    ],
+    "uncertainty": [
+      {
+        "item": "tab:unused",
+        "reason": "defined in main.tex and never referenced",
+        "needs_human": false
+      }
+    ],
+    "change_records": [
+      {
+        "id": "tex-1",
+        "action": "compile",
+        "before": "main.tex",
+        "after": "exit 0; 0 line-mapped errors; 1 hygiene notes",
+        "reason": "a TeX error is only actionable with a file and a line"
+      }
+    ],
+    "limits": [
+      "compile finished; label or citation hygiene still reports issues"
+    ],
+    "main_file": "main.tex",
+    "compile": {
+      "engine": "pdflatex",
+      "passes": 2,
+      "exit_code": 0,
+      "pdf": "/tmp/tmpxrn72kdv/work/build/main.pdf"
+    },
+    "errors": [],
+    "hygiene": [
+      {
+        "kind": "uncited_float",
+        "label": "tab:unused",
+        "message": "defined in main.tex and never referenced"
+      }
+    ],
+    "artifacts": {
+      "log_tail": "\\l__color_backend_stack_int=\\count193\n\\l__pdf_internal_box=\\box50\n)\n(/tmp/tmpxrn72kdv/work/build/main.aux)\n\\openout1 = `main.aux'.\n\nLaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\nLaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.\nLaTeX Font Info:    ... okay on input line 2.\n [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}\n\n] (/tmp/tmpxrn72kdv/work/build/main.aux) ) \nHere is how much of TeX's memory you used:\n 402 strings out of 479654\n 7641 string characters out of 5883416\n 294153 words of memory out of 5000000\n 18586 multiletter control sequences out of 15000+600000\n 469259 words of font info for 28 fonts, out of 8000000 for 9000\n 309 hyphenation exceptions out of 8191\n 34i,5n,38p,140b,148s stack positions out of 5000i,500n,10000p,200000b,80000s\n</usr/share/texlive/texmf-dist/fonts/\ntype1/public/amsfonts/cm/cmr10.pfb>\nOutput written on /tmp/tmpxrn72kdv/work/build/main.pdf (1 page, 15195 bytes).\nPDF statistics:\n 13 PDF objects out of 1000 (max. 8388607)\n 7 compressed objects within 1 object stream\n 0 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n",
+      "pdf_written": true
+    }
+  },
+  "broken_compile": {
+    "case_id": "example-min-latex-broken",
+    "status": "partial",
+    "errors": [
+      {
+        "file": "broken.tex",
+        "line": 4,
+        "message": "Undefined control sequence."
+      }
+    ],
+    "pdf_written": false
+  }
+}

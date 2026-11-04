@@ -1,0 +1,11 @@
+{
+  "case_id": "example-min-translation",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "source_language": "en",
+  "target_language": "zh",
+  "materials": {
+    "source": "source.md",
+    "glossary": "glossary.json",
+    "translation": "translation.json"
+  }
+}

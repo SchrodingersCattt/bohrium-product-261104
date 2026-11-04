@@ -1,0 +1,22 @@
+{
+  "required": [
+    "document",
+    "blocks",
+    "sections",
+    "tables",
+    "formulas",
+    "reading_order_notes",
+    "unreadable"
+  ],
+  "lists": [
+    "blocks",
+    "sections",
+    "tables",
+    "formulas",
+    "reading_order_notes",
+    "unreadable",
+    "sources",
+    "uncertainty",
+    "change_records"
+  ]
+}

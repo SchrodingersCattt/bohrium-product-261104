@@ -1,0 +1,1 @@
+EXAMPLE ONLY. Build one graph for both toy notes. Merge WideNet only if the abbreviation and long form agree. Do not merge the two accuracy numbers. Do not treat CNN as WideNet. Run the three queries. Paragraph ids are not PDF pages. Do not copy the primary DOI onto the secondary note.

@@ -1,0 +1,16 @@
+{
+  "case_id": "example-min-pdf",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "materials": {
+    "fixture": "fixture_spec.json"
+  },
+  "output_contract": [
+    "document",
+    "blocks",
+    "sections",
+    "tables",
+    "formulas",
+    "reading_order_notes",
+    "unreadable"
+  ]
+}

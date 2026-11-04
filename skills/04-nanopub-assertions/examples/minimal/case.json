@@ -1,0 +1,5 @@
+{
+  "case_id": "example-min-nanopub",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "materials": {"source": "source.md", "assertions": "assertions.json"}
+}

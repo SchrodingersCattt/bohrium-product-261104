@@ -1,0 +1,124 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-methods",
+    "status": "partial",
+    "status_reason": "prose numbers match the config; a setup field such as the dataset is absent and was not invented",
+    "sources": [
+      {
+        "source_id": "seed",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "locator": "line 1",
+        "quote": "seed=7"
+      },
+      {
+        "source_id": "lr",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "locator": "line 2",
+        "quote": "lr=0.001"
+      },
+      {
+        "source_id": "epochs",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "locator": "line 3",
+        "quote": "epochs=12"
+      }
+    ],
+    "uncertainty": [
+      {
+        "item": "dataset",
+        "reason": "not named in the supplied config",
+        "needs_human": true
+      }
+    ],
+    "change_records": [
+      {
+        "id": "methods-1",
+        "action": "trace",
+        "before": "prose numbers",
+        "after": "3 config values; 0 unsupported",
+        "reason": "a smooth paragraph can introduce a number that no config contains"
+      }
+    ],
+    "limits": [
+      "prose numbers match the config; a setup field such as the dataset is absent and was not invented"
+    ],
+    "parameter_table": [
+      {
+        "name": "seed",
+        "value": 7,
+        "unit": "",
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 1
+      },
+      {
+        "name": "lr",
+        "value": 0.001,
+        "unit": "",
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 2
+      },
+      {
+        "name": "epochs",
+        "value": 12,
+        "unit": "",
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 3
+      }
+    ],
+    "datasets": [
+      {
+        "name": null,
+        "status": "not_in_source",
+        "reason": "no dataset key in the config or logs"
+      }
+    ],
+    "steps": [
+      {
+        "step_id": "p1",
+        "name": "seed",
+        "value": 7,
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 1
+      },
+      {
+        "step_id": "p2",
+        "name": "lr",
+        "value": 0.001,
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 2
+      },
+      {
+        "step_id": "p3",
+        "name": "epochs",
+        "value": 12,
+        "source": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml",
+        "line": 3
+      }
+    ],
+    "prose": "We train for 12 epochs with seed 7. The learning rate is 0.001.\n",
+    "number_audit": {
+      "unsupported": [],
+      "known_values": [
+        "0.001",
+        "12",
+        "7"
+      ]
+    },
+    "reproducibility": {
+      "config_files": [
+        "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/09-methods-from-config/examples/minimal/config.yaml"
+      ],
+      "parameters_extracted": 3,
+      "command": "python train.py --config config.yaml",
+      "seed_present": true
+    },
+    "limitations": [
+      {
+        "item": "dataset",
+        "reason": "not named in the supplied config",
+        "needs_author": true
+      }
+    ]
+  }
+}

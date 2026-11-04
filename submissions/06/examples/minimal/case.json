@@ -1,0 +1,5 @@
+{
+  "case_id": "example-min-polish",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "materials": {"source": "source.txt", "edits": "edits.json"}
+}

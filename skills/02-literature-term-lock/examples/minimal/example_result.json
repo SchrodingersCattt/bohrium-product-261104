@@ -1,0 +1,60 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-translation",
+    "status": "success",
+    "status_reason": "every segment keeps numbers, units, citations, formulas, and locked terms",
+    "sources": [
+      {
+        "source_id": "s1",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/02-literature-term-lock/examples/minimal/source.md",
+        "locator": "s1",
+        "quote": "The binding affinity was 10 mg/L in buffer (Smith, 2020). Equation $E = mc^2$ held under 25 °C."
+      },
+      {
+        "source_id": "s2",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/02-literature-term-lock/examples/minimal/source.md",
+        "locator": "s2",
+        "quote": "This sentence has no measurement and only sets the scene."
+      }
+    ],
+    "uncertainty": [],
+    "change_records": [
+      {
+        "id": "lock-1",
+        "action": "audit",
+        "before": "free translation",
+        "after": "segment ids with number, unit, citation, formula, and glossary checks",
+        "reason": "a fluent paragraph can drop a numeral or rename a locked term"
+      }
+    ],
+    "limits": [],
+    "source_language": "en",
+    "target_language": "zh",
+    "glossary": [
+      {
+        "source": "binding affinity",
+        "target": "结合亲和力",
+        "locked": true
+      }
+    ],
+    "segments": [
+      {
+        "seg_id": "s1",
+        "source": "The binding affinity was 10 mg/L in buffer (Smith, 2020). Equation $E = mc^2$ held under 25 °C.",
+        "translation": "结合亲和力为 10 mg/L(缓冲液)(Smith, 2020)。公式 $E = mc^2$ 在 25 °C 下成立。",
+        "issues": []
+      },
+      {
+        "seg_id": "s2",
+        "source": "This sentence has no measurement and only sets the scene.",
+        "translation": "本句没有测量值,只用来交代场景。",
+        "issues": []
+      }
+    ],
+    "audit": {
+      "issues": [],
+      "n_segments": 2
+    }
+  }
+}

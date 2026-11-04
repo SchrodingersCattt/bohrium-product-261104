@@ -1,0 +1,5 @@
+{
+  "case_id": "example-min-intro",
+  "label": "EXAMPLE ONLY. Not an official contest case.",
+  "materials": {"library": "library.json", "draft": "draft.json"}
+}

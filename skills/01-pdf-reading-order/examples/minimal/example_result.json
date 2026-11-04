@@ -1,0 +1,285 @@
+{
+  "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
+  "result": {
+    "case_id": "example-min-pdf",
+    "status": "success",
+    "status_reason": "text-layer blocks ordered by column bands; no text invented",
+    "sources": [
+      {
+        "source_id": "fixture",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/01-pdf-reading-order/examples/minimal/fixture_spec.json",
+        "locator": "pages 1-2",
+        "quote": "1. Introduction"
+      }
+    ],
+    "uncertainty": [],
+    "change_records": [
+      {
+        "id": "order-1",
+        "action": "reorder",
+        "before": "raw PDF block order or top-to-bottom y-sort",
+        "after": "full-width bands, then left column, then right column",
+        "reason": "two-column pages interleave if sorted only by vertical position"
+      },
+      {
+        "id": "margin-1",
+        "action": "label",
+        "before": "running headers and page numbers mixed with body candidates",
+        "after": "role header or footer, kept in blocks but excluded from section flow ordering",
+        "reason": "repeated margin text and page numbers are not body paragraphs"
+      }
+    ],
+    "limits": [],
+    "document": {
+      "source": {
+        "kind": "fixture",
+        "path": "/aisi-nas/guomingyu/agent_dev/agent-challenge/bohrium-product-261104/skills/01-pdf-reading-order/examples/minimal/fixture_spec.json"
+      },
+      "n_pages": 2,
+      "n_blocks": 10,
+      "backend": "fixture"
+    },
+    "blocks": [
+      {
+        "block_id": "p1-b001",
+        "page": 1,
+        "reading_index": 1,
+        "in_body_flow": true,
+        "bbox": [
+          72.0,
+          70.0,
+          520.0,
+          92.0
+        ],
+        "column": "full",
+        "role": "heading",
+        "role_confidence": 0.76,
+        "text": "1. Introduction",
+        "raw_text": "1. Introduction",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p1-b002",
+        "page": 1,
+        "reading_index": 2,
+        "in_body_flow": true,
+        "bbox": [
+          72.0,
+          120.0,
+          280.0,
+          190.0
+        ],
+        "column": "left",
+        "role": "paragraph",
+        "role_confidence": 0.6,
+        "text": "LEFT-ANCHOR opens the left column after the heading.",
+        "raw_text": "LEFT-ANCHOR opens the left column after the heading.",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p1-b003",
+        "page": 1,
+        "reading_index": 3,
+        "in_body_flow": true,
+        "bbox": [
+          72.0,
+          200.0,
+          280.0,
+          240.0
+        ],
+        "column": "left",
+        "role": "formula",
+        "role_confidence": 0.64,
+        "text": "E = mc^2",
+        "raw_text": "E = mc^2",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p1-b004",
+        "page": 1,
+        "reading_index": 4,
+        "in_body_flow": true,
+        "bbox": [
+          320.0,
+          100.0,
+          530.0,
+          160.0
+        ],
+        "column": "right",
+        "role": "paragraph",
+        "role_confidence": 0.6,
+        "text": "RIGHT-ANCHOR is the right column and must not be read first.",
+        "raw_text": "RIGHT-ANCHOR is the right column and must not be read first.",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p1-b005",
+        "page": 1,
+        "reading_index": 5,
+        "in_body_flow": false,
+        "bbox": [
+          72.0,
+          28.0,
+          400.0,
+          44.0
+        ],
+        "column": "margin",
+        "role": "header",
+        "role_confidence": 0.9,
+        "text": "Example Journal 1",
+        "raw_text": "Example Journal  1",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p1-b006",
+        "page": 1,
+        "reading_index": 6,
+        "in_body_flow": false,
+        "bbox": [
+          280.0,
+          810.0,
+          320.0,
+          828.0
+        ],
+        "column": "margin",
+        "role": "footer",
+        "role_confidence": 0.9,
+        "text": "1",
+        "raw_text": "1",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p2-b007",
+        "page": 2,
+        "reading_index": 7,
+        "in_body_flow": true,
+        "bbox": [
+          72.0,
+          130.0,
+          280.0,
+          200.0
+        ],
+        "column": "left",
+        "role": "paragraph",
+        "role_confidence": 0.6,
+        "text": "PAGE2-LEFT continues the paper.",
+        "raw_text": "PAGE2-LEFT continues the paper.",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p2-b008",
+        "page": 2,
+        "reading_index": 8,
+        "in_body_flow": true,
+        "bbox": [
+          320.0,
+          100.0,
+          530.0,
+          170.0
+        ],
+        "column": "right",
+        "role": "paragraph",
+        "role_confidence": 0.6,
+        "text": "PAGE2-RIGHT stays in the right column.",
+        "raw_text": "PAGE2-RIGHT stays in the right column.",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p2-b009",
+        "page": 2,
+        "reading_index": 9,
+        "in_body_flow": false,
+        "bbox": [
+          72.0,
+          28.0,
+          400.0,
+          44.0
+        ],
+        "column": "margin",
+        "role": "header",
+        "role_confidence": 0.9,
+        "text": "Example Journal 2",
+        "raw_text": "Example Journal  2",
+        "dehyphenated": false,
+        "warnings": []
+      },
+      {
+        "block_id": "p2-b010",
+        "page": 2,
+        "reading_index": 10,
+        "in_body_flow": false,
+        "bbox": [
+          280.0,
+          810.0,
+          320.0,
+          828.0
+        ],
+        "column": "margin",
+        "role": "footer",
+        "role_confidence": 0.9,
+        "text": "2",
+        "raw_text": "2",
+        "dehyphenated": false,
+        "warnings": []
+      }
+    ],
+    "sections": [
+      {
+        "section_id": "s1",
+        "title": "1. Introduction",
+        "level": 1,
+        "page": 1,
+        "block_ids": [
+          "p1-b001",
+          "p1-b002",
+          "p1-b003",
+          "p1-b004",
+          "p2-b007",
+          "p2-b008"
+        ]
+      }
+    ],
+    "tables": [],
+    "formulas": [
+      {
+        "formula_id": "p1-b003",
+        "page": 1,
+        "text": "E = mc^2",
+        "bbox": [
+          72.0,
+          200.0,
+          280.0,
+          240.0
+        ],
+        "note": "surface text only; scientific meaning is not interpreted"
+      }
+    ],
+    "reading_order_notes": [
+      {
+        "page": 1,
+        "mode": "columns",
+        "split_x": [
+          196.0
+        ],
+        "n_body_blocks": 4
+      },
+      {
+        "page": 2,
+        "mode": "columns",
+        "split_x": [
+          196.0
+        ],
+        "n_body_blocks": 2
+      }
+    ],
+    "unreadable": []
+  }
+}

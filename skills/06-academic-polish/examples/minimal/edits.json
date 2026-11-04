@@ -1,0 +1,19 @@
+{
+  "label": "EXAMPLE ONLY. Toy edits.",
+  "edits": [
+    {
+      "sentence_id": "s1",
+      "original": "The model may reach 10 mg/L [1].",
+      "revised": "The model may reach 10 mg/L [1].",
+      "edit_type": "unchanged",
+      "reason": "The hedge, dose, and citation are already exact."
+    },
+    {
+      "sentence_id": "s2",
+      "original": "Figure 1 shows the same run.",
+      "revised": "Figure 1 shows the same run.",
+      "edit_type": "unchanged",
+      "reason": "No grammar change is required."
+    }
+  ]
+}
