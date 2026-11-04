@@ -70,3 +70,23 @@ Where the script can finish from the case inputs, it now writes a full `result.j
 - 09 methods: prose is rendered from the parameter table. A missing dataset stays `not_in_source`.
 
 Slot 02 still refuses to invent a translation. Slots 07 and 10 already wrote `result.json` from the bibliography and the TeX sources. `run_example.py` passes for all ten skills, including a no-sidecar case for the six above.
+
+## 2026-11-05 00:54 Asia/Shanghai — slot 01 is in the worker queue
+
+`playground` 0.1.39 is on PATH (`/root/.local/bin/playground`, node v22.23.1). `playground auth status` is authenticated against `https://play.bohrium.com/api`. `GET http://47.92.88.121:443/health` is ok. The CLI's built-in worker base is `http://47.92.88.121:443/api`. `scripts/submit_recipe.py` exits 0.
+
+The advertised 0.1.40 package (`https://play.bohrium.com/packages/paper2arm-playground-cli-0.1.40.tgz` and the same name on `nwjs1473070.bohrium.tech:50003`) is HTTP 404. `https://play.bohrium.com/install.sh` is still HTTP 405. The submit used 0.1.39.
+
+Dry-run, then one real submit, both with `--outputs submissions/01 --skill submissions/01 --model grok-4.7 --harness cursor`. The trace is the cursor session that built the skill (`3fed5113`, 79 JSONL rows, no secret-pattern hits). The CLI rewrote that session into 79 thought/observation steps. Nested `tool_use` blocks stay inside the message text; the converter does not emit paired tool calls or token cost.
+
+Attempt **62998**. Worker upload returned `status=queued`, `job_id=39640`, bundle sha256 `39a0cd1ebfcd2352f779aa11742a75e8865b43b10bda911121f79ff6f99f397a`, 66 zip entries, 1545633 bytes. Skill evidence is `skills/01/SKILL.md` (13 files, 55361 bytes) and the same tree at `outputs/SKILL.md`. Entrypoint is the CLI stub `src/reproduce.py`. The zip has no `package_skill.py` and no `skill_inventory.json`.
+
+A status read about 20 seconds later: `status=submitted`, `scoringQueue.stage=queued`, `queuePosition=17`, `scoringState.state=queued`, `workerStatus=queued`, `scoreIsFinal=false`. About 90 seconds after submit the same attempt was `stage=received`, `scoringState.state=evaluating`, `workerStatus=evaluating`, with `scoringDetails` still empty. That is the worker queue, not `missing_worker_submission`. `generated-skill` status returned HTTP 401 `worker_unauthorized`; the upload itself was accepted.
+
+Slots 02–10 stay unsubmitted. Local rehearsal of slot 01 still reports `status=success`, 10 blocks, validator `ok`.
+
+### Residual risk
+
+- 0.1.39 prints that a newer CLI may affect the score, and the 0.1.40 tarball is not downloadable from this host.
+- If 62998 later scores 0 with a source other than `missing_worker_submission`, the first place to look is the flattened trace (no tool-call pairs, cost 0) and the hidden cases. Do not resubmit until that status is known.
+- `workerReceivedAt` was still null at the `stage=received` read. The stage and `workerStatus=evaluating` are the fields that moved.
