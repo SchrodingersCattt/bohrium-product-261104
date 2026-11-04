@@ -15,7 +15,7 @@ Sharp sub-problem: a parameter table with file and line, and a prose audit that 
 ## Procedure
 
 1. Read the config directory or file from the case (`materials.config` or `materials.config_dir`). JSON objects and `key: value` / `key=value` lines in `.yaml`, `.yml`, `.txt`, and `.log` are extracted. Nested JSON objects are skipped rather than flattened into guesses.
-2. Write `prose.md` using only values that appear in that table. If you mention a dataset, its name must be one of the extracted values. If the config has no dataset key, say the dataset is not in the source.
+2. Write `prose.md` using only values that appear in that table. If you mention a dataset, its name must be one of the extracted values. If the config has no dataset key, say the dataset is not in the source. If `prose.md` is absent, the script writes that paragraph from the table and does not add numbers of its own.
 3. Run:
 
 ```bash

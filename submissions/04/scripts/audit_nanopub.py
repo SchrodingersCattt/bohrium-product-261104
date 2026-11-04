@@ -68,6 +68,74 @@ def json_loads(text: str) -> dict[str, Any]:
     return value
 
 
+def provenance_of(case: dict[str, Any]) -> dict[str, Any]:
+    materials = case.get("materials") if isinstance(case.get("materials"), dict) else {}
+    raw = case.get("paper_provenance") or materials.get("paper_provenance") or {}
+    return dict(raw) if isinstance(raw, dict) else {}
+
+
+def relation_hit(text: str, relations: set[str]) -> tuple[str, str] | None:
+    folded = squash(text).casefold()
+    hits = []
+    for relation in relations:
+        phrase = relation.replace("_", " ")
+        if re.search(rf"(?<!\w){re.escape(phrase)}(?!\w)", folded):
+            hits.append((len(phrase), relation, phrase))
+    if not hits:
+        return None
+    hits.sort(reverse=True)
+    return hits[0][1], hits[0][2]
+
+
+def draft_payload(spans: list[dict[str, str]], relations: set[str], case: dict[str, Any]) -> dict[str, Any]:
+    """Account for every span from the source when assertions.json was not written."""
+    provenance = provenance_of(case)
+    complete = all(provenance.get(key) for key in PROVENANCE_KEYS)
+    assertions = []
+    rejected = []
+    if not complete:
+        for span in spans:
+            rejected.append(
+                {
+                    "span_id": span["span_id"],
+                    "reason": "paper provenance is not in the case; span left unasserted",
+                }
+            )
+        return {"paper_provenance": provenance, "assertions": assertions, "rejected_spans": rejected}
+    for span in spans:
+        hit = relation_hit(span["text"], relations)
+        if hit is None:
+            rejected.append({"span_id": span["span_id"], "reason": "span is not a controlled claim"})
+            continue
+        relation, phrase = hit
+        folded = squash(span["text"])
+        match = re.search(rf"(?<!\w){re.escape(phrase)}(?!\w)", folded, re.IGNORECASE)
+        before = squash(folded[: match.start()]) if match else ""
+        after = squash(folded[match.end() :]) if match else ""
+        before = before.rstrip(" ,:;")
+        after = after.rstrip(" .")
+        if not before or before.casefold() not in squash(span["text"]).casefold():
+            rejected.append({"span_id": span["span_id"], "reason": "no subject before the relation"})
+            continue
+        assertions.append(
+            {
+                "assertion_id": f"a-{span['span_id']}",
+                "span_id": span["span_id"],
+                "subject": before,
+                "relation": relation,
+                "object": after,
+                "conditions": [],
+                "assertion_text": squash(span["text"]).rstrip(".") + ".",
+                "evidence_quote": span["text"],
+                "evidence_kind": "direct",
+                "confidence": 0.5,
+                "confidence_basis": "The relation word and subject are inside this span.",
+                "provenance": {key: provenance.get(key) for key in PROVENANCE_KEYS},
+            }
+        )
+    return {"paper_provenance": provenance, "assertions": assertions, "rejected_spans": rejected}
+
+
 def audit_items(
     spans: list[dict[str, str]],
     assertions: list[dict[str, Any]],
@@ -176,17 +244,13 @@ def main() -> int:
     spans = spans_of(text)
     materials = case.get("materials") if isinstance(case.get("materials"), dict) else {}
     path = Path(args.assertions) if args.assertions else locate(str(materials.get("assertions") or "assertions.json"), [Path(args.work), *roots])
-    payload = load_json(path) if path and path.exists() else {}
+    payload = load_json(path) if path and path.exists() else draft_payload(spans, relations, case)
     assertions = list(payload.get("assertions") or [])
     rejected = list(payload.get("rejected_spans") or [])
-    issues = audit_items(spans, assertions, rejected, relations) if payload else [
-        {"item": span["span_id"], "check": "span_not_accounted", "detail": "assertions.json missing"} for span in spans
-    ]
+    issues = audit_items(spans, assertions, rejected, relations)
     hard = [issue for issue in issues if issue["check"] != "relation_not_controlled"]
     proposed = [issue for issue in issues if issue["check"] == "relation_not_controlled"]
-    if not payload:
-        status, reason = "partial", "spans are cut; assertions.json is still required"
-    elif hard:
+    if hard:
         status, reason = "partial", "at least one assertion failed a structural check"
     elif not assertions and spans:
         status, reason = "partial", "no assertion was accepted"

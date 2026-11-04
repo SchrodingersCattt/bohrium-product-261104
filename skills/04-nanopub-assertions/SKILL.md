@@ -17,7 +17,7 @@ Read `resources/assertion_patterns.jsonl` (20 fictional Widget shapes) and `reso
 ## Procedure
 
 1. Read the source named by `/input/case.json`.
-2. Write `assertions.json`:
+2. Write `assertions.json`. If that file is absent, the script still emits `result.json`: spans whose case states `paper_provenance` (`source_id`, `title`, `authors`, `year`) become one direct assertion when a controlled relation word is in the span; every other span is an explicit rejection. Provenance is not invented.
 
 - `paper_provenance`: `source_id`, `title`, `authors`, `year`, and version or identifier when the paper states them.
 - `assertions[]`: `assertion_id`, `span_id`, `subject`, `relation`, `object`, `conditions`, `assertion_text`, `evidence_quote`, `evidence_kind` (`direct` or `inference`), `confidence`, `confidence_basis`, `provenance` with the same identity fields.

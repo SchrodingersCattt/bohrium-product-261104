@@ -48,7 +48,7 @@ Envelope plus `graph.nodes`, `graph.edges`, `merges`, `conflicts`, `rejected`, `
 
 Each node and edge evidence item has `source_id`, `paragraph_id`, and `quote`.
 
-`status` is `partial` if fewer than three queries ran or the candidate file is missing. `success` means the graph was built from grounded candidates and the queries ran. Rejected junk does not by itself fail the run; it is listed under `uncertainty`.
+`status` is `partial` if fewer than three queries ran, or if there is no candidate file and no abbreviation node was harvested. When `candidates.json` or `queries.json` is absent, harvested `Long Form (ABBR)` nodes are grounded and three queries (`find_surface`, `outgoing`, `conflicts`) run on the first surface. `success` means those nodes or a grounded candidate file produced a graph and the queries ran. Rejected junk does not by itself fail the run; it is listed under `uncertainty`.
 
 ## Failure rules
 

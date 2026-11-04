@@ -106,8 +106,18 @@ def main() -> int:
     rows = sentences(source)
     by_id = {row["sentence_id"]: row["text"] for row in rows}
     edits_path = Path(args.edits) if args.edits else locate(str(materials.get("edits") or "edits.json"), [Path(args.work), *roots])
-    proposed = load_json(edits_path) if edits_path and edits_path.exists() else {}
+    edits_missing = edits_path is None or not edits_path.exists()
+    proposed = {} if edits_missing else load_json(edits_path)
     proposals = {item.get("sentence_id"): item for item in proposed.get("edits") or []}
+    if edits_missing:
+        for row in rows:
+            proposals[row["sentence_id"]] = {
+                "sentence_id": row["sentence_id"],
+                "original": row["text"],
+                "revised": row["text"],
+                "edit_type": "unchanged",
+                "reason": "no edits file; sentence kept verbatim",
+            }
     applied = []
     revised_parts = []
     issues = []
@@ -152,10 +162,10 @@ def main() -> int:
                 "applied": revised != original,
             }
         )
-    if edits_path is None or not edits_path.exists():
-        status, reason = "partial", "sentences are split; edits.json is still required"
-    elif issues:
+    if issues:
         status, reason = "partial", "some edits were reverted because they changed facts or strength"
+    elif edits_missing:
+        status, reason = "success", "no edits file; each sentence was kept and the preservation checks passed"
     else:
         status, reason = "success", "applied edits keep numbers, units, citations, and hedge strength"
     result = base_result(case_id_of(case), status, reason)

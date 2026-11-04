@@ -18,6 +18,54 @@ def squash(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+SENT_RE = re.compile(r"(?<=[.!?])\s+")
+
+
+def first_sentence(text: str) -> str:
+    body = squash(text)
+    if not body:
+        return ""
+    return SENT_RE.split(body, maxsplit=1)[0]
+
+
+def draft_from_library(papers: dict[str, Any], inventory: dict[str, Any]) -> dict[str, Any]:
+    """One group, one copied sentence per paper, one contribution copied from the inventory."""
+    paper_ids = []
+    cells = []
+    for paper_id, paper in papers.items():
+        quote = first_sentence(str(paper.get("text") or ""))
+        paper_ids.append(paper_id)
+        cells.append({"paper_id": paper_id, "claim": quote, "quote": quote})
+    evidence_id = next(iter(inventory), None)
+    contributions = []
+    prose = ""
+    if evidence_id:
+        contributions.append(
+            {
+                "text": str(inventory[evidence_id].get("text") or ""),
+                "evidence_ids": [evidence_id],
+            }
+        )
+        prose = f"[@{evidence_id}]"
+    return {
+        "groups": [
+            {
+                "group_id": "g-source",
+                "axis": "verbatim source text",
+                "paper_ids": paper_ids,
+                "cells": cells,
+            }
+        ],
+        "gap": {
+            "text": "No gap sentence was quoted from the papers.",
+            "premise_ids": [],
+            "author_judgment": True,
+        },
+        "contributions": contributions,
+        "prose": prose,
+    }
+
+
 def locate(raw: str, roots: list[Path]) -> Path | None:
     path = Path(raw)
     if path.is_absolute() and path.exists():
@@ -54,7 +102,8 @@ def main() -> int:
     library = load_json(library_path)
     papers = {item["paper_id"]: item for item in library.get("papers") or []}
     inventory = {item["evidence_id"]: item for item in library.get("inventory") or []}
-    draft = load_json(draft_path) if draft_path and draft_path.exists() else {}
+    draft_missing = draft_path is None or not draft_path.exists()
+    draft = draft_from_library(papers, inventory) if draft_missing else load_json(draft_path)
     issues = []
     seen: set[str] = set()
     groups = draft.get("groups") or []
@@ -109,9 +158,7 @@ def main() -> int:
                 "title": paper.get("title") or "",
             }
         )
-    if draft_path is None or not draft_path.exists():
-        status, reason = "partial", "library is loaded; draft.json is still required"
-    elif issues:
+    if issues:
         status, reason = "partial", "one or more comparison cells or contributions are unbound"
     elif not groups or not contributions:
         status, reason = "partial", "draft needs at least one group and one contribution"

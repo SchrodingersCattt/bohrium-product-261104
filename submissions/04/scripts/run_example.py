@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,14 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "minimal"
 
 
-def run(assertions: Path | None, output: Path) -> dict:
+def run(assertions: Path | None, output: Path, root: Path | None = None) -> dict:
+    root = root or EXAMPLE
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "audit_nanopub.py"),
         "--case",
-        str(EXAMPLE / "case.json"),
+        str(root / "case.json"),
         "--input-root",
-        str(EXAMPLE),
+        str(root),
         "--work",
         str(output.parent / "work"),
         "--output",
@@ -64,6 +66,38 @@ def main() -> int:
         checks = {item["check"] for item in failed["quality_checks"]}
         if "too_wide" not in checks or "span_not_accounted" not in checks:
             raise SystemExit(f"wide assertion was not caught: {checks}")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "assertions.json").unlink()
+        unstated = run(None, tmp_path / "bare-result.json", bare)
+        if unstated["assertions"] or unstated["status"] == "success":
+            raise SystemExit("assertions were minted without provenance")
+        if {item["span_id"] for item in unstated["rejected_spans"]} != {span["span_id"] for span in unstated["spans"]}:
+            raise SystemExit(unstated["rejected_spans"])
+        stated = tmp_path / "stated"
+        stated.mkdir()
+        (stated / "source.md").write_text("Widget-A uses ToySet. The room was quiet.\n", encoding="utf-8")
+        (stated / "case.json").write_text(
+            json.dumps(
+                {
+                    "case_id": "example-stated-provenance",
+                    "paper_provenance": {
+                        "source_id": "toy-note",
+                        "title": "A toy widget note",
+                        "authors": ["A Example"],
+                        "year": 2024,
+                    },
+                    "materials": {"source": "source.md"},
+                }
+            ),
+            encoding="utf-8",
+        )
+        drafted = run(None, tmp_path / "stated-result.json", stated)
+        if drafted["status"] != "success":
+            raise SystemExit(json.dumps(drafted["quality_checks"], ensure_ascii=False))
+        relations = {item["relation"] for item in drafted["assertions"]}
+        if relations != {"uses"}:
+            raise SystemExit(relations)
         check = subprocess.run(
             [
                 sys.executable,

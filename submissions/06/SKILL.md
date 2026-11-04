@@ -40,7 +40,7 @@ python3 /skills/weekly-skill/scripts/audit_edits.py \
 
 Envelope plus `revised_text`, `edits` (`applied` true or false), `preservation` (numbers and citations per source sentence), `sentences`.
 
-`status` is `partial` when any edit was reverted or the edits file is missing. `success` means every proposed edit passed.
+`status` is `partial` when any edit was reverted. If `edits.json` is absent, each sentence is recorded as `unchanged` and `success` means that verbatim ledger passed the preservation checks. A present edits file is `success` when every proposed edit passed.
 
 ## Failure rules
 

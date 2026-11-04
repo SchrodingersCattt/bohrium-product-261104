@@ -1,0 +1,31 @@
+{
+  "timestamp_asia_shanghai": "2026-11-05 00:30 CST",
+  "action": "cli_lookup_and_recipe",
+  "submitted": false,
+  "dry_run": false,
+  "attempt_id": null,
+  "install_sh": {
+    "url": "https://play.bohrium.com/install.sh",
+    "http_status": 405
+  },
+  "npm_paper2arm_playground_cli": "404 on registry.npmjs.org, npmmirror, tencent mirror",
+  "public_github": {
+    "repo": "Osgood001/playground-cli",
+    "version": "0.1.7",
+    "used_for_submit": false,
+    "reason": "different API host; not the 0.1.48 worker client"
+  },
+  "worker": "{\"status\": \"ok\", \"service\": \"playground-worker-upload\"}",
+  "worker_ok": true,
+  "playground_on_path": false,
+  "recipe_exit": 2,
+  "package": {
+    "files": 13,
+    "text_files": 13,
+    "text_bytes": 55361,
+    "total_bytes": 55361,
+    "problems": [],
+    "matches_skill": true
+  },
+  "next_command": "playground submit --challenge-id product-arena-08-3027d350 --outputs submissions/01 --trace <session.jsonl> --dry-run"
+}

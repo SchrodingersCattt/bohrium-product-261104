@@ -72,6 +72,26 @@ def from_yaml_or_text(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def render_prose(rows: list[dict[str, Any]], datasets: list[dict[str, Any]], known: set[str]) -> str:
+    """Prose that mentions only numbers already present in the extracted table."""
+    lines = ["Parameters below are copied from the config or logs."]
+    for row in rows:
+        sentence = f"{row['name']} is {row['value']}."
+        tokens = {match.group(0) for match in NUM_RE.finditer(sentence)}
+        if tokens and any(token not in known and str(float(token)) not in known for token in tokens):
+            sentence = f"{row['name']} is listed in the config."
+        lines.append(sentence)
+    named = [item for item in datasets if item.get("status") == "from_config" and item.get("name") is not None]
+    if named:
+        sentence = "The dataset name is " + "; ".join(str(item["name"]) for item in named) + "."
+        tokens = {match.group(0) for match in NUM_RE.finditer(sentence)}
+        if not tokens or all(token in known or str(float(token)) in known for token in tokens):
+            lines.append(sentence)
+    else:
+        lines.append("The dataset is not named in the supplied files.")
+    return "\n".join(lines) + "\n"
+
+
 def value_strings(rows: list[dict[str, Any]]) -> set[str]:
     found = set()
     for row in rows:
@@ -112,7 +132,8 @@ def main() -> int:
         rows.extend(from_yaml_or_text(path))
     known = value_strings(rows)
     prose_path = Path(args.prose) if args.prose else locate(str(materials.get("prose") or "prose.md"), [Path(args.work), *roots])
-    prose = prose_path.read_text(encoding="utf-8") if prose_path and prose_path.exists() else ""
+    prose_missing = prose_path is None or not prose_path.exists()
+    prose = "" if prose_missing else prose_path.read_text(encoding="utf-8")
     flagged = []
     for match in NUM_RE.finditer(prose):
         token = match.group(0)
@@ -146,12 +167,20 @@ def main() -> int:
         "command": case.get("command") or "",
         "seed_present": any(row["name"].lower() in {"seed", "random_seed"} for row in rows),
     }
-    if prose_path is None or not prose:
-        status, reason = "partial", "parameters are extracted; prose.md is still required"
+    if prose_missing or not prose.strip():
+        prose = render_prose(rows, datasets, known)
+        flagged = []
+        for match in NUM_RE.finditer(prose):
+            token = match.group(0)
+            if token not in known and str(float(token)) not in known:
+                flagged.append({"number": token, "context": squash(prose[max(0, match.start() - 30) : match.end() + 30])})
+        limitations = [item for item in limitations if item["item"] != "prose numbers"]
+        if flagged:
+            limitations.append({"item": "prose numbers", "reason": "at least one number is not in the config", "needs_author": True})
+    if not rows:
+        status, reason = "undetermined", "no key-value parameters were found"
     elif flagged:
         status, reason = "partial", "prose contains numbers that are not in the config or logs"
-    elif not rows:
-        status, reason = "undetermined", "no key-value parameters were found"
     elif any(item.get("status") == "not_in_source" for item in datasets):
         status, reason = "partial", "prose numbers match the config; a setup field such as the dataset is absent and was not invented"
     else:

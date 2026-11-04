@@ -15,7 +15,7 @@ Sharp sub-problem: notes follow the paper's own headings, and every quote is a s
 ## Procedure
 
 1. Read `/input/case.json` and the paper. If it is a PDF, use extracted text with section breaks. Do not paste a generic abstract template over the paper's headings.
-2. Draft `notes.json` with `cards[]`: `card_id`, `section_id` or `section_title`, `field`, `text`, `evidence_quote`. The quote is copied from that section, not paraphrased into the quote field. The paraphrase, if any, goes in `text`.
+2. Draft `notes.json` with `cards[]`: `card_id`, `section_id` or `section_title`, `field`, `text`, `evidence_quote`. The quote is copied from that section, not paraphrased into the quote field. The paraphrase, if any, goes in `text`. If `notes.json` is absent, the script copies one sentence from each section whose title names `question`, `data`, `method`, `finding`, or `limitation`, and leaves the other fields in `field_gaps`.
 3. Audit:
 
 ```bash

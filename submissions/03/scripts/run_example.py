@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,14 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "minimal"
 
 
-def audit(notes: Path | None, output: Path) -> dict:
+def audit(notes: Path | None, output: Path, root: Path | None = None) -> dict:
+    root = root or EXAMPLE
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "audit_notes.py"),
         "--case",
-        str(EXAMPLE / "case.json"),
+        str(root / "case.json"),
         "--input-root",
-        str(EXAMPLE),
+        str(root),
         "--work",
         str(output.parent / "work"),
         "--output",
@@ -45,6 +47,15 @@ def main() -> int:
         failed = audit(bad_path, tmp_path / "bad-result.json")
         if failed["status"] == "success":
             raise SystemExit("invented accuracy was accepted")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "notes.json").unlink()
+        drafted = audit(None, tmp_path / "bare-result.json", bare)
+        if drafted["status"] != "success" or drafted["field_gaps"]:
+            raise SystemExit(json.dumps(drafted.get("field_gaps"), ensure_ascii=False))
+        quotes = {point["evidence_quote"] for point in drafted["knowledge_points"]}
+        if "0.50" not in " ".join(quotes) or "0.99" in " ".join(quotes):
+            raise SystemExit(sorted(quotes))
         check = subprocess.run(
             [
                 sys.executable,

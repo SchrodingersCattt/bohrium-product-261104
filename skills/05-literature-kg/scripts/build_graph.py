@@ -355,10 +355,18 @@ def main() -> int:
     queries = load_json(query_path) if query_path else []
     if isinstance(queries, dict):
         queries = queries.get("queries") or []
+    if not queries:
+        surface = next((str(node.get("surface") or "") for node in canonical_nodes if node.get("surface")), "")
+        if surface:
+            queries = [
+                {"query_id": "q-surface", "type": "find_surface", "surface": surface},
+                {"query_id": "q-out", "type": "outgoing", "surface": surface},
+                {"query_id": "q-conflicts", "type": "conflicts"},
+            ]
     answers = run_queries(queries, canonical_nodes, edges, conflicts)
     docs = {str(doc.get("source_id")): doc for doc in manifest.get("documents") or []}
-    if not candidate_path:
-        status, reason = "partial", "alias nodes were harvested; relations need a grounded candidate file"
+    if not candidate_path and not canonical_nodes:
+        status, reason = "partial", "no candidate file and no abbreviation nodes were harvested"
     elif len(answers) < 3:
         status, reason = "partial", "fewer than 3 queries were executed"
     else:

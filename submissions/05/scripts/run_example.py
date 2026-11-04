@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -58,6 +59,40 @@ def main() -> int:
             raise SystemExit("ImageNet was kept without support")
         if len(result["queries"]) < 3:
             raise SystemExit("queries were not executed")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "candidates.json").unlink()
+        (bare / "queries.json").unlink()
+        bare_out = tmp_path / "bare-result.json"
+        bare_proc = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "build_graph.py"),
+                "--case",
+                str(bare / "case.json"),
+                "--input-root",
+                str(bare),
+                "--work",
+                str(tmp_path / "bare-work"),
+                "--output",
+                str(bare_out),
+            ],
+            check=False,
+            text=True,
+            capture_output=True,
+        )
+        if bare_proc.returncode != 0:
+            raise SystemExit(bare_proc.stdout + bare_proc.stderr)
+        harvested = json.loads(bare_out.read_text(encoding="utf-8"))
+        if harvested["status"] != "success" or len(harvested["queries"]) < 3:
+            raise SystemExit(json.dumps(harvested.get("uncertainty"), ensure_ascii=False))
+        bare_wide = [
+            node
+            for node in harvested["graph"]["nodes"]
+            if "widenet" in {node["surface"].casefold(), *(alias.casefold() for alias in node.get("aliases") or [])}
+        ]
+        if len(bare_wide) != 1:
+            raise SystemExit(f"harvest did not keep one WideNet node: {bare_wide}")
         dois = [doc.get("doi") for doc in result["documents"]]
         if dois[0] == dois[1] or None in dois:
             raise SystemExit(f"DOI mixup: {dois}")

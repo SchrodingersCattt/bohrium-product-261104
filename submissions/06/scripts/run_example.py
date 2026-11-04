@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,14 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "minimal"
 
 
-def run(edits: Path | None, output: Path) -> dict:
+def run(edits: Path | None, output: Path, root: Path | None = None) -> dict:
+    root = root or EXAMPLE
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "audit_edits.py"),
         "--case",
-        str(EXAMPLE / "case.json"),
+        str(root / "case.json"),
         "--input-root",
-        str(EXAMPLE),
+        str(root),
         "--work",
         str(output.parent / "work"),
         "--output",
@@ -49,6 +51,14 @@ def main() -> int:
         failed = run(bad_path, tmp_path / "bad-result.json")
         if "proves" in failed["revised_text"] or failed["status"] == "success":
             raise SystemExit("strengthening edit was applied")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "edits.json").unlink()
+        kept = run(None, tmp_path / "bare-result.json", bare)
+        if kept["status"] != "success" or "10 mg/L" not in kept["revised_text"] or "may" not in kept["revised_text"]:
+            raise SystemExit("missing edits file did not keep the source")
+        if any(edit["edit_type"] != "unchanged" for edit in kept["edits"]):
+            raise SystemExit(kept["edits"])
         check = subprocess.run(
             [
                 sys.executable,

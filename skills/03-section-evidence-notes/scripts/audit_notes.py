@@ -14,8 +14,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from harbor import base_result, case_id_of, load_json, write_json
 
 FIELDS = ("question", "data", "method", "finding", "limitation")
+FIELD_HINTS = {
+    "question": ("question", "aim", "objective", "problem", "目的", "问题"),
+    "data": ("data", "dataset", "corpus", "sample", "材料", "数据"),
+    "method": ("method", "approach", "protocol", "procedure", "方法"),
+    "finding": ("finding", "result", "结果", "发现"),
+    "limitation": ("limitation", "limit", "future work", "局限", "不足"),
+}
 HEAD_RE = re.compile(r"^(#{1,6})\s+(.*\S)\s*$")
 NUM_RE = re.compile(r"^(\d+(?:\.\d+)*)[\.\s]+(\S.{0,120})$")
+SENT_RE = re.compile(r"(?<=[.!?])\s+")
 
 
 def squash(text: str) -> str:
@@ -81,6 +89,41 @@ def read_text(case: dict[str, Any], roots: list[Path]) -> tuple[str, str]:
     return path.read_text(encoding="utf-8"), str(path)
 
 
+def first_sentence(text: str) -> str:
+    body = text.strip()
+    if not body:
+        return ""
+    return squash(SENT_RE.split(body, maxsplit=1)[0])
+
+
+def draft_cards(sections: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One substring quote per field, taken from a section whose title names that field."""
+    cards = []
+    for field in FIELDS:
+        hints = FIELD_HINTS[field]
+        chosen = None
+        for section in sections:
+            title = section["title"].casefold()
+            if any(hint in title for hint in hints):
+                chosen = section
+                break
+        if chosen is None:
+            continue
+        quote = first_sentence(str(chosen.get("text") or ""))
+        if not quote or squash(quote) not in squash(str(chosen.get("text") or "")):
+            continue
+        cards.append(
+            {
+                "card_id": f"c-{field}",
+                "section_id": chosen["section_id"],
+                "field": field,
+                "text": quote,
+                "evidence_quote": quote,
+            }
+        )
+    return cards
+
+
 def audit(sections: list[dict[str, Any]], cards: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     by_id = {section["section_id"]: section for section in sections}
     by_title = {squash(section["title"]).casefold(): section for section in sections}
@@ -136,8 +179,9 @@ def main() -> int:
     if notes_path is None:
         found = locate(str(materials.get("notes") or "notes.json"), [Path(args.work), *roots])
         notes_path = found
-    notes = load_json(notes_path) if notes_path and notes_path.exists() else {}
-    cards = list(notes.get("cards") or [])
+    notes_missing = notes_path is None or not notes_path.exists()
+    notes = {} if notes_missing else load_json(notes_path)
+    cards = draft_cards(sections) if notes_missing else list(notes.get("cards") or [])
     cards, issues = audit(sections, cards)
     present = {card.get("field") for card in cards if not any(issue.get("card_id") == card.get("card_id") for issue in issues)}
     gaps = []
@@ -157,8 +201,8 @@ def main() -> int:
                 "evidence_quote": card.get("evidence_quote"),
             }
         )
-    if notes_path is None or not notes_path.exists():
-        status, reason = "partial", "sections are cut; notes.json is still required"
+    if notes_missing and (issues or gaps):
+        status, reason = "partial", "sections are cut; a field had no in-section quote to copy"
     elif issues or gaps:
         status, reason = "partial", "some cards are unanchored or a required field is missing"
     else:

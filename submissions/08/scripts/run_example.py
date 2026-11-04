@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,14 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "minimal"
 
 
-def run(draft: Path | None, output: Path) -> dict:
+def run(draft: Path | None, output: Path, root: Path | None = None) -> dict:
+    root = root or EXAMPLE
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "audit_intro.py"),
         "--case",
-        str(EXAMPLE / "case.json"),
+        str(root / "case.json"),
         "--input-root",
-        str(EXAMPLE),
+        str(root),
         "--work",
         str(output.parent / "work"),
         "--output",
@@ -45,6 +47,18 @@ def main() -> int:
         failed = run(bad_path, tmp_path / "bad-result.json")
         if failed["status"] == "success":
             raise SystemExit("invented quote was accepted")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "draft.json").unlink()
+        drafted = run(None, tmp_path / "bare-result.json", bare)
+        if drafted["status"] != "success":
+            raise SystemExit(json.dumps(drafted["uncertainty"], ensure_ascii=False))
+        library = json.loads((EXAMPLE / "library.json").read_text(encoding="utf-8"))
+        texts = {paper["paper_id"]: paper["text"] for paper in library["papers"]}
+        for group in drafted["groups"]:
+            for cell in group["cells"]:
+                if cell["quote"] not in texts[cell["paper_id"]]:
+                    raise SystemExit(cell)
         check = subprocess.run(
             [
                 sys.executable,

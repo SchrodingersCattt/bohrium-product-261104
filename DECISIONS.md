@@ -45,4 +45,28 @@ playground submit \
 - This environment has no `playground` binary, so the CLI packaging path is not locally proven.
 - A trace that does not show the skill run can still zero the attempt after the queue accepts it.
 - The local proof uses the labeled fixture, not the three hidden cases.
-- Slots 02–10 use the same queue failure. Several of those scripts only emit `result.json` after the model writes an intermediate file (`translation.json`, edit ledger, and so on). Slot 01 is the single-track candidate because `parse_pdf.py` writes the full result by itself.
+- Slots 02–10 use the same queue failure. Slot 01 stays the single-track candidate because `parse_pdf.py` writes the full result by itself.
+
+## 2026-11-05 00:30 Asia/Shanghai — CLI still blocked; other slots write result.json without the sidecar
+
+`playground` is not on PATH. Checked this session:
+
+- `https://play.bohrium.com/install.sh` is HTTP 405 from the Alibaba edge. The same 405 is returned for `/api/cli/install.sh` and for percent-encoded `.sh`. Paths that do not contain `.sh` (`/api/ears/install`, the site HTML, the skill gzip bundles) return 200.
+- `npm view @paper2arm/playground-cli` is 404 on registry.npmjs.org, npmmirror, and the Tencent mirror. `registry.dp.tech` is 404. `npm.dp.tech` is 403.
+- The protocol text names `https://git.dp.tech/incubation/playground-for-agentic-science`. That host timed out, with and without a proxy.
+- `https://github.com/Osgood001/playground-cli` is `@paper2arm/playground-cli` **0.1.7** and its README points at `http://nwjs1473070.bohrium.tech:50002/api`. That is not CLI 0.1.48 and not worker `http://47.92.88.121:443/api`. It was not installed and not used to submit.
+- Worker `GET /health` returned `{"status":"ok","service":"playground-worker-upload"}`.
+- `scripts/submit_recipe.py` checks the slot-01 package, that identity with `skills/01-pdf-reading-order`, and the worker health URL, then prints the dry-run command. It exits 2 while the binary is missing. It does not submit.
+
+No new attempt id. Slots 02–10 stay held.
+
+Where the script can finish from the case inputs, it now writes a full `result.json` when the model sidecar is missing. Existing labeled files still win, and the negative controls still fail:
+
+- 03 notes: a sentence is copied from the section whose title names the field.
+- 04 nanopub: a controlled relation becomes one assertion only when `paper_provenance` is on the case; otherwise every span is an explicit rejection and nothing is invented.
+- 05 graph: harvested `Long Form (ABBR)` nodes plus three default queries run when `candidates.json` / `queries.json` are absent.
+- 06 polish: each sentence is kept as `unchanged` and still passes the number, citation, and hedge checks.
+- 08 related work: one group quotes each paper's first sentence, and the contribution copies an inventory passage.
+- 09 methods: prose is rendered from the parameter table. A missing dataset stays `not_in_source`.
+
+Slot 02 still refuses to invent a translation. Slots 07 and 10 already wrote `result.json` from the bibliography and the TeX sources. `run_example.py` passes for all ten skills, including a no-sidecar case for the six above.

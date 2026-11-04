@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,14 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "minimal"
 
 
-def run(prose: Path | None, output: Path) -> dict:
+def run(prose: Path | None, output: Path, root: Path | None = None) -> dict:
+    root = root or EXAMPLE
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "audit_methods.py"),
         "--case",
-        str(EXAMPLE / "case.json"),
+        str(root / "case.json"),
         "--input-root",
-        str(EXAMPLE),
+        str(root),
         "--work",
         str(output.parent / "work"),
         "--output",
@@ -49,6 +51,16 @@ def main() -> int:
         failed = run(bad_path, tmp_path / "bad-result.json")
         if not any(item["number"] == "99" for item in failed["number_audit"]["unsupported"]):
             raise SystemExit("invented 99 was not flagged")
+        bare = tmp_path / "bare"
+        shutil.copytree(EXAMPLE, bare)
+        (bare / "prose.md").unlink()
+        drafted = run(None, tmp_path / "bare-result.json", bare)
+        if drafted["number_audit"]["unsupported"] or not drafted["prose"].strip():
+            raise SystemExit(drafted["prose"])
+        if drafted["datasets"][0]["status"] != "not_in_source" or drafted["status"] == "success":
+            raise SystemExit("missing dataset was invented or marked success")
+        if "99" in drafted["prose"]:
+            raise SystemExit(drafted["prose"])
         check = subprocess.run(
             [
                 sys.executable,
