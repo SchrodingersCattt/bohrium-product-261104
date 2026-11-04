@@ -606,7 +606,11 @@ def extract(case: dict[str, Any], roots: list[Path]) -> tuple[dict[str, Any], li
             raise
         except Exception as exc:
             warnings.append(f"pymupdf failed: {exc}")
-            pages, extra = blocks_from_pdftotext(pdf)
+            try:
+                pages, extra = blocks_from_pdftotext(pdf)
+            except Exception as fallback_exc:
+                warnings.append(f"pdftotext fallback failed: {fallback_exc}")
+                return assemble([], [], source), warnings, "none"
             warnings.extend(extra)
             return assemble(pages, [], source), warnings, "pdftotext"
     if fixture_key or case.get("pages"):
@@ -625,8 +629,8 @@ def extract(case: dict[str, Any], roots: list[Path]) -> tuple[dict[str, Any], li
 
 
 def status_for(parsed: dict[str, Any], warnings: list[str]) -> tuple[str, str]:
-    if not parsed["blocks"] and parsed["unreadable"]:
-        return "undetermined", "no text layer on the provided PDF; characters were not guessed"
+    if not parsed["blocks"]:
+        return "undetermined", "no text layer recovered; characters were not guessed"
     if parsed["unreadable"] or any("fallback" in warning for warning in warnings):
         return "partial", "structure recovered only for pages with a text layer or reliable coordinates"
     low = [block for block in parsed["blocks"] if block.get("role_confidence", 1) < 0.5]
@@ -718,6 +722,14 @@ def empty_payload() -> dict[str, Any]:
     }
 
 
+def failure_result(case_id: str, reason: str) -> dict[str, Any]:
+    result = base_result(case_id, "undetermined", reason)
+    result.update(empty_payload())
+    result["limits"] = [reason]
+    result["uncertainty"] = [{"item": "parser", "reason": reason, "needs_human": True}]
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Parse a PDF or box fixture into reading order")
     parser.add_argument("--case", required=True)
@@ -726,15 +738,23 @@ def main() -> int:
     parser.add_argument("--input-root", default="")
     args = parser.parse_args()
     case_path = Path(args.case)
-    case = load_json(case_path)
-    roots = [case_path.parent]
-    if args.input_root:
-        roots.append(Path(args.input_root))
-    roots.append(Path("/input"))
     work = Path(args.work)
-    work.mkdir(parents=True, exist_ok=True)
-    result = build_result(case, roots)
     output = Path(args.output)
+    work.mkdir(parents=True, exist_ok=True)
+    try:
+        case = load_json(case_path)
+        roots = [case_path.parent]
+        if args.input_root:
+            roots.append(Path(args.input_root))
+        roots.append(Path("/input"))
+        result = build_result(case, roots)
+    except Exception as exc:
+        case_id = "unknown"
+        try:
+            case_id = case_id_of(load_json(case_path))
+        except Exception:
+            pass
+        result = failure_result(case_id, f"parser failed: {exc}")
     write_json(output, result)
     write_json(work / "result.json", result)
     print(f"wrote {output} status={result['status']} blocks={len(result['blocks'])}")

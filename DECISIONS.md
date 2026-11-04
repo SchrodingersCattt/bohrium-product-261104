@@ -108,3 +108,37 @@ That dry-run does not identify a packaging defect that would leave `workerReceiv
 `python3 scripts/rehearse_worker_layout.py` exits 0. All ten packages match their skill trees and sit under the file caps. Each skill, installed at `skills/weekly-skill`, writes `app/output/result.json` and passes `validate_result.py`. Bare sidecar passes: 02 `partial`, 03 `success`, 04 `partial` with no minted assertions, 05 `success`, 06 `success` with `unchanged` edits, 08 `success`, 09 `partial` with prose. Slot 10 writes a PDF and stays `partial` because `tab:unused` is unreferenced.
 
 Next: poll 62998 until `scoreIsFinal`. Slots 02–10 stay held. Any later single resubmit waits until `scoringDetails.source` is known.
+
+## 2026-11-05 01:50 Asia/Shanghai — supervisor: 62998 left evaluating → pending_review / evaluation_error
+
+Poll shows attempt **62998** no longer stuck in worker queue:
+- `status=pending_review`, `execStatus=failed`, `scoringState.state=failed`, `scoreIsFinal=false`, score display 0
+- `resultsJson.harbor_status=evaluation_error`, `non_scored_subtype=evaluation_error`, `scored_by=playground-worker/harbor-lbg`
+- `harbor_replay_executed=1`, `harbor_errors=0`, `scoringDetails=null`, `bundleStatus=null`
+- `updatedAt=2026-11-04T17:34:33+00:00` (was stuck at submit time while evaluating)
+- This is **not** the baseline `missing_worker_submission` path — Harbor/LBG ran a replay and errored before a final score.
+
+Explore pid from last session exited after the 30-min receipt note. Supervisor restarts continuous-explore with diagnosis focus. Slots 02–10 remain held. No auto-resubmit until evaluation_error root cause is known.
+
+## 2026-11-05 02:05 Asia/Shanghai — 62998 Harbor evaluation_error is a missing reward, not a graded zero
+
+`playground status --attempt-id 62998` matches the receipt: `pending_review`, `execStatus=failed`, `scoreIsFinal=false`, `harbor_status=evaluation_error`, `scored_by=playground-worker/harbor-lbg`, `harbor_replay_executed=1`, `harbor_errors=0`, `harbor_reward=null`, `scoringDetails=null`. `updatedAt=2026-11-04T17:34:33Z`, about 41 minutes after `createdAt=2026-11-04T16:53:22Z`. Scoring-log is HTTP 403 for this account (challenge owner / collaborator / admin only). Worker `GET /api/jobs/39640` is still `not_found`.
+
+A graded Harbor job on this same challenge looks different. Attempts 62715, 62879, and 62982 are `scored` / `execStatus=completed` / `harbor_status=scored` with a numeric `harbor_reward` (0.597, 0.593, 0.527) and `scoringDetails.source=harbor_worker`. `evaluation_error` leaves the reward null and never fills `scoringDetails`. Every `evaluation_error` row across the ten product arenas also has `harbor_errors=0`, so that field is the worker's empty default, not a count of clean trials.
+
+Across 91 Harbor results, 19 are `evaluation_error`. Ten of those finished in under 6 minutes. Nine ran 35–49 minutes, the same window as successful grades. On `product-arena-08` specifically, full-length `evaluation_error` already happened to CLI 0.1.48 submissions that have `rawMessagesAvailable=true` and an empty attempt `trace` (`[]`), including three declared as DeepSeek Harness (62892, 62906, 62943, 62947) and one Codex (62865). So attaching raw messages is not sufficient to obtain a reward on this task.
+
+### What 62998 packaged
+
+Public `GET /api/attempts/62998/trace` is 79 steps: 76 `thought`, 3 `observation`, 0 `tool_call`, total `cost_usd=0`, one shared timestamp. 75 of those bodies still contain the string `tool_use`. The cursor session (`3fed5113`, 79 rows) stores 224 `tool_use` blocks inside `message.content`, with `role` set and `type` absent. Both CLI 0.1.39 and 0.1.48 therefore take `convertMessageRows` and stringify the blocks. `claudeCodeEventLike` does not match. `GET /api/attempts/62998/raw_messages` is 404 and `rawMessagesAvailable` is null. Scored 0.1.48 attempts expose `trace: []`.
+
+A 0.1.48 `--dry-run` of the fixed slot-01 tree and the same session did not submit. Bundle sha256 `8a3499d932cbd7039814f4ea43447d8c3fce0ef4660612404fe443eb2a7471b5`, 1492637 bytes. `arm_manifest.json` still points `entrypoint` at the CLI placeholder `src/reproduce.py` (it prints a sentence and does not run the skill). `raw_messages.jsonl` starts with `type=session_start` and keeps the 224 `tool_use` blocks. The ARM trace is still 79 flattened steps. Rewriting the session so each row has `type=role` makes 0.1.48 emit 224 `tool_call` steps and 224 `error` steps with no `tool_result` and cost still 0. That trace was not submitted.
+
+### Local skill failure that matches a missing reward
+
+Harbor's verifier raises when neither reward file exists. The platform's reward is computed from `/app/output/result.json`. Before this edit, `parse_pdf.py` exited 1 with no file when PyMuPDF and `pdftotext` both rejected the input (`RuntimeError` from `blocks_from_pdftotext` is outside the `PermissionError` / `FileNotFoundError` handlers). A text file named as a PDF reproduced that: return code 1, `result.json` absent. The script now returns an empty assemble on that fallback failure, and `main` writes `status=undetermined` for any other exception. `run_example.py` covers the broken file. `scripts/rehearse_worker_layout.py` still exits 0 for all ten slots. The labeled example stays `success`.
+
+### Not submitted
+
+Slots 02–10 stay held. Slot 01 was not resubmitted. A 0.1.48 upload would attach `raw_messages` and would include the writer fix, but the same challenge already produced 40-minute `evaluation_error` results from 0.1.48 packages, and this cursor session still cannot be converted into paired tool calls or a non-zero cost. The one allowed resubmit waits until that residual is accepted or the trace can be paired.
+

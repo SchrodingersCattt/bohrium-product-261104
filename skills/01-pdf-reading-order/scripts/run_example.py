@@ -111,6 +111,16 @@ def main() -> int:
         case_path.write_text(json.dumps(pdf_case), encoding="utf-8")
         pdf_result = run_case(case_path, tmp_path, tmp_path / "pdf-result.json")
         assert_order(pdf_result, "pdf")
+        broken_pdf = tmp_path / "broken.pdf"
+        broken_pdf.write_text("not a pdf", encoding="utf-8")
+        broken_case = tmp_path / "broken-case.json"
+        broken_case.write_text(
+            json.dumps({"case_id": "example-broken-pdf", "materials": {"pdf": "broken.pdf"}}),
+            encoding="utf-8",
+        )
+        broken = run_case(broken_case, tmp_path, tmp_path / "broken-result.json")
+        if broken.get("status") != "undetermined" or broken.get("blocks"):
+            raise SystemExit(f"broken pdf: expected undetermined and no blocks, got {broken.get('status')}")
     wrapped = {
         "label": "EXAMPLE ONLY. Not an official contest case and not a prepared answer.",
         "result": fixture_result,
